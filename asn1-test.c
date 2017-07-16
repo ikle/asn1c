@@ -99,10 +99,19 @@ static void show_list (int level, const struct se *o)
 	}
 }
 
+static void show_name (const struct se *o)
+{
+	const char *name;
+
+	if ((name = se_name (o)) != NULL)
+		printf ("%s", name);
+	else
+		printf ("tag %d", o->type >> 12);
+}
+
 static void show (int level, const struct se *o)
 {
 	int i;
-	const char *name;;
 
 	indent (level); putchar ('(');
 
@@ -111,10 +120,7 @@ static void show (int level, const struct se *o)
 		return;
 	}
 
-	if ((name = se_name (o)) != NULL)
-		printf ("%s", name);
-	else
-		printf ("tag %d", o->type >> 12);
+	show_name (o);
 
 	if (o->type == SE_LIST)
 		show_list (level, o);
