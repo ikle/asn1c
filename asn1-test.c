@@ -55,7 +55,7 @@ static const char *se_name (const struct se *o)
 
 static void indent (int level)
 {
-	printf ("%*s", level * 3, "");
+	printf ("%*s", level * 4, "");
 }
 
 static void show (int level, const struct se *o);
