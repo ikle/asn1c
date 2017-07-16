@@ -57,7 +57,7 @@ int asn1_parse (struct se **o, void *scanner);
 %token TOKEN_OPTIONAL TOKEN_DEFAULT
 
 %token '{' '}' '(' ')'
-%left ','
+%right ','
 
 %%
 
