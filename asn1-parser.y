@@ -136,12 +136,12 @@ consts	: consts[H] ',' consts[T]		{ $$ = se (SE_LIST, $H, $T);	}
 	;
 
 fields	: '{' field_list[L] '}'			{ $$ = $L;			}
-	| '{' field_list[L] ',' "..." '}'	{ $$ = $L;			}
 	;
 
 field_list
 	: field_list[H] ',' field_list[T]	{ $$ = se (SE_LIST, $H, $T);	}
 	| TOKEN_ID[I] type[T]			{ $$ = se (SE_FIELD, $I, $T);	}
+	| "..."					{ $$ = se (SE_ELLIPSIS);	}
 	;
 
 %%

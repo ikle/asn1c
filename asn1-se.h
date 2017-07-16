@@ -38,6 +38,8 @@ enum se_type
 	SE_SEQ		= SE ( 3, 0, 1),
 	SE_SET		= SE ( 4, 0, 1),
 	SE_CHOICE	= SE ( 5, 0, 1),
+
+	SE_ELLIPSIS	= SE ( 0, 1, 0),
 };
 
 #endif  /* ASN1_SE_H */
