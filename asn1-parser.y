@@ -92,14 +92,18 @@ assignment
 	: TOKEN_TYPE[T] "::=" type[E]		{ $$ = se (SE_TYPE, $T, $E);	}
 	;
 
-type	: TOKEN_TYPE[T]				{ $$ = se (SE_TYPEREF, $T, NULL); }
-	| TOKEN_TYPE[T] '(' constrain[C] ')'	{ $$ = se (SE_TYPEREF, $T, $C);	}
+type	: TOKEN_TYPE[T]	constrains[C]		{ $$ = se (SE_TYPEREF, $T, $C); }
 	| TOKEN_ENUMERATED '{' consts[L] '}'	{ $$ = se (SE_ENUM, $L);	}
 	| TOKEN_SEQUENCE "OF" TOKEN_TYPE[T]	{ $$ = se (SE_SEQ_OF, $T);	}
 	| TOKEN_SET "OF"      TOKEN_TYPE[T]	{ $$ = se (SE_SET_OF, $T);	}
 	| TOKEN_SEQUENCE fields[L]		{ $$ = se (SE_SEQ, $L);		}
 	| TOKEN_SET      fields[L]		{ $$ = se (SE_SET, $L);		}
 	| TOKEN_CHOICE   fields[L]		{ $$ = se (SE_CHOICE, $L);	}
+	;
+
+constrains
+	: '(' constrain[C] ')'			{ $$ = $C;			}
+	| /* empty */				{ $$ = NULL;			}
 	;
 
 constrain
