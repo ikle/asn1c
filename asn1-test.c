@@ -122,10 +122,16 @@ static void show (int level, const struct se *o)
 
 	show_name (o);
 
-	if (o->type == SE_LIST)
-		show_list (level, o);
-	else
-		show_args (level, o);
+	switch (o->type) {
+	case SE_LIST:
+		show_list (level, o); break;
+	case SE_SEQ:
+	case SE_SET:
+	case SE_CHOICE:
+		show_list (level, o->item[0]); break;
+	default:
+		show_args (level, o); break;
+	}
 
 	putchar (')');
 }
