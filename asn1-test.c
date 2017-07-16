@@ -61,6 +61,22 @@ static void show_term (int level, const char *value)
 	indent (level); printf ("%s", value);
 }
 
+static void show (int level, const struct se *o);
+
+static void show_args (int level, const struct se *o)
+{
+	int i;
+
+	for (i = 0; i < se_count (o->type); ++i) {
+		putchar ('\n');
+
+		if (se_is_terminal (o->type))
+			show_term  (level + 1, o->item[i]);
+		else
+			show (level + 1, o->item[i]);
+	}
+}
+
 static void show (int level, const struct se *o)
 {
 	int i;
@@ -78,14 +94,7 @@ static void show (int level, const struct se *o)
 	else
 		printf ("tag %d", o->type >> 12);
 
-	for (i = 0; i < se_count (o->type); ++i) {
-		putchar ('\n');
-
-		if (se_is_terminal (o->type))
-			show_term  (level + 1, o->item[i]);
-		else
-			show (level + 1, o->item[i]);
-	}
+	show_args (level, o);
 
 	putchar (')');
 }
