@@ -20,7 +20,8 @@ enum se_type
 	SE_NAME		= SE ( 0, 1, 1),
 	SE_COMMENT	= SE ( 1, 1, 1),
 	SE_NUMBER	= SE ( 2, 1, 1),
-	SE_RANGE	= SE ( 3, 1, 1),
+	SE_STRING	= SE ( 3, 1, 1),
+	SE_RANGE	= SE ( 4, 1, 1),
 
 	SE_CONST	= SE ( 0, 0, 2),
 	SE_LIST		= SE ( 1, 0, 2),
@@ -28,6 +29,8 @@ enum se_type
 	SE_TYPE		= SE ( 3, 0, 2),
 	SE_TYPEREF	= SE ( 4, 0, 2),
 	SE_FIELD	= SE ( 5, 0, 2),
+
+	SE_VALUE	= SE ( 0, 0, 3),
 
 	SE_ENUM		= SE ( 0, 0, 1),
 	SE_SEQ_OF	= SE ( 1, 0, 1),

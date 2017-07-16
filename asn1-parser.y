@@ -48,9 +48,9 @@ int asn1_parse (struct se **o, void *scanner);
 %token TOKEN_ENUMERATED TOKEN_SEQUENCE TOKEN_SET TOKEN_CHOICE
 
 %token TOKEN_TYPE TOKEN_ID
-%token TOKEN_NUMBER
+%token TOKEN_NUMBER TOKEN_STRING
 %destructor { se_free ($$); }
-	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER
+	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER TOKEN_STRING
 
 %token TOKEN_SIZE TOKEN_RANGE
 %token TOKEN_OPTIONAL TOKEN_DEFAULT
@@ -91,6 +91,8 @@ assignments
 
 assignment
 	: TOKEN_TYPE[T] "::=" type[E]		{ $$ = se (SE_TYPE, $T, $E);	}
+	| TOKEN_ID[I] TOKEN_TYPE[T] "::=" constant[C]
+						{ $$ = se (SE_VALUE, $I, $T, $C); }
 	;
 
 type	: TOKEN_TYPE[T]	constrains[C] defs	{ $$ = se (SE_TYPEREF, $T, $C); }
@@ -124,6 +126,7 @@ defs	: TOKEN_OPTIONAL
 constant
 	: TOKEN_ID				{ $$ = $1;			}
 	| TOKEN_NUMBER				{ $$ = $1;			}
+	| TOKEN_STRING				{ $$ = $1;			}
 	;
 
 consts	: consts[H] ',' consts[T]		{ $$ = se (SE_LIST, $H, $T);	}

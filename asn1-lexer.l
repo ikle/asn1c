@@ -94,6 +94,7 @@ NUMBER		[0-9]+
 	[a-z]{NAME_TAIL}	{ SET (NAME);	RET (ID);	}
 	{NUMBER}[.]{2}{NUMBER}	{ SET (RANGE);	RET (RANGE);	}
 	{NUMBER}		{ SET (NUMBER);	RET (NUMBER);	}
+	\"(([^"]|\n|\"\")*)\"	{ SET (STRING);	RET (STRING);	}
 
 	/* space, comment and simple */
 
@@ -111,4 +112,5 @@ NUMBER		[0-9]+
 	{NL}			{ BEGIN (INITIAL);		}
 	.
 }
+
 %%

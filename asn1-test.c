@@ -28,6 +28,7 @@ static const char *se_name (const struct se *o)
 	case SE_NAME:		return "name";
 	case SE_COMMENT:	return "comment";
 	case SE_NUMBER:		return "num";
+	case SE_STRING:		return "str";
 	case SE_RANGE:		return "range";
 
 	case SE_CONST:		return "const";
@@ -36,6 +37,8 @@ static const char *se_name (const struct se *o)
 	case SE_TYPE:		return "type";
 	case SE_TYPEREF:	return "ref";
 	case SE_FIELD:		return "field";
+
+	case SE_VALUE:		return "value";
 
 	case SE_ENUM:		return "enum";
 	case SE_SEQ_OF:		return "seq-of";
