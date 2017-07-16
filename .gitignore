@@ -1,0 +1,4 @@
+*.o
+*.swp
+*-lexer.[ch]
+*-parser.[ch]
