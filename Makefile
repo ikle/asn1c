@@ -1,4 +1,4 @@
-TARGETS =
+TARGETS = asn1-test
 
 CFLAGS += -O6
 
@@ -20,3 +20,6 @@ install: $(TARGETS)
 %-parser.c %-parser.h: %-parser.y
 	bison -o $(patsubst %.y,%.c, $<) \
 		--defines=$(patsubst %.y,%.h, $<) $<
+
+asn1-lexer.o: asn1-parser.h
+asn1-test: se.o asn1-lexer.o asn1-parser.o
