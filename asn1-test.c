@@ -77,6 +77,24 @@ static void show_args (int level, const struct se *o)
 	}
 }
 
+static void show_list (int level, const struct se *o)
+{
+	const struct se *head, *tail;
+
+	for (; o != NULL; o = tail) {
+		putchar ('\n');
+
+		if (o->type != SE_LIST) {  /* non-list leaf node */
+			show (level + 1, o);
+			break;
+		}
+
+		head = o->item[0], tail = o->item[1];
+
+		show (level + 1, head);
+	}
+}
+
 static void show (int level, const struct se *o)
 {
 	int i;
@@ -94,7 +112,10 @@ static void show (int level, const struct se *o)
 	else
 		printf ("tag %d", o->type >> 12);
 
-	show_args (level, o);
+	if (o->type == SE_LIST)
+		show_list (level, o);
+	else
+		show_args (level, o);
 
 	putchar (')');
 }
