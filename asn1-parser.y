@@ -41,6 +41,7 @@ int asn1_parse (struct se **o, void *scanner);
 
 %token TOKEN_DEFINITIONS
 %token TOKEN_BEGIN TOKEN_END
+%token TOKEN_IMPLICIT TOKEN_EXPLICIT TOKEN_AUTOMATIC TOKEN_TAGS
 
 %token TOKEN_ASSIGN "::=" TOKEN_ELLIPSIS "..." TOKEN_OF "OF"
 
@@ -65,9 +66,21 @@ modules : module[H] modules[T]			{ $$ = se (SE_LIST, $H, $T);	}
 	| /* empty */				{ $$ = NULL;			}
 	;
 
-module	: TOKEN_TYPE[M] TOKEN_DEFINITIONS "::=" TOKEN_BEGIN
+module	: TOKEN_TYPE[M] TOKEN_DEFINITIONS def_tags "::="
+	  TOKEN_BEGIN
 		assignments[L]
 	  TOKEN_END				{ $$ = se (SE_MODULE, $M, $L);	}
+	;
+
+def_tags
+	: tag_type TOKEN_TAGS
+	| /* empty */
+	;
+
+tag_type
+	: TOKEN_IMPLICIT
+	| TOKEN_EXPLICIT
+	| TOKEN_AUTOMATIC
 	;
 
 assignments

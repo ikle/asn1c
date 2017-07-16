@@ -53,6 +53,11 @@ NUMBER		[0-9]+
 	BEGIN			{ RET (BEGIN);			}
 	END			{ RET (END);			}
 
+	IMPLICIT		{ RET (IMPLICIT);		}
+	EXPLICIT		{ RET (EXPLICIT);		}
+	AUTOMATIC		{ RET (AUTOMATIC);		}
+	TAGS			{ RET (TAGS);			}
+
 	::=			{ RET (ASSIGN);			}
 	[.]{3}			{ RET (ELLIPSIS);		}
 
