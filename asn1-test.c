@@ -51,35 +51,43 @@ static const char *se_name (const struct se *o)
 	return NULL;
 }
 
-static void show (const char *prefix, const struct se *o)
+static void indent (int level)
+{
+	printf ("%*s", level * 3, "");
+}
+
+static void show_term (int level, const char *value)
+{
+	indent (level); printf ("%s", value);
+}
+
+static void show (int level, const struct se *o)
 {
 	int i;
 	const char *name;;
 
+	indent (level); putchar ('(');
+
 	if (o == NULL) {
-		printf ("(nil)");
+		printf ("nil)");
 		return;
 	}
-
-	printf ("%s(", prefix);
 
 	if ((name = se_name (o)) != NULL)
 		printf ("%s", name);
 	else
 		printf ("tag %d", o->type >> 12);
 
-	for (i = 0; i < se_count (o->type); ++i)
+	for (i = 0; i < se_count (o->type); ++i) {
+		putchar ('\n');
+
 		if (se_is_terminal (o->type))
-			printf (" %s", o->item[i]);
-		else {
-			putchar (' ');
-			show ("", o->item[i]);
-		}
+			show_term  (level + 1, o->item[i]);
+		else
+			show (level + 1, o->item[i]);
+	}
 
 	putchar (')');
-
-	if (prefix[0] != '\0')
-		putchar ('\n');
 }
 
 int main (int argc, char *argv[])
@@ -89,7 +97,7 @@ int main (int argc, char *argv[])
 	if ((se = get_ast (stdin)) == NULL)
 		return 1;
 
-	show ("ASN.1 = ", se);
+	show (0, se); putchar ('\n');
 
 	se_free (se);
 	return 0;
