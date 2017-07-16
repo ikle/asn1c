@@ -27,10 +27,10 @@ enum se_type
 	SE_LIST		= SE ( 1, 0, 2),
 	SE_MODULE	= SE ( 2, 0, 2),
 	SE_TYPE		= SE ( 3, 0, 2),
-	SE_TYPEREF	= SE ( 4, 0, 2),
 	SE_FIELD	= SE ( 5, 0, 2),
 
 	SE_VALUE	= SE ( 0, 0, 3),
+	SE_TYPEREF	= SE ( 1, 0, 3),
 
 	SE_ENUM		= SE ( 0, 0, 1),
 	SE_SEQ_OF	= SE ( 1, 0, 1),
@@ -38,8 +38,10 @@ enum se_type
 	SE_SEQ		= SE ( 3, 0, 1),
 	SE_SET		= SE ( 4, 0, 1),
 	SE_CHOICE	= SE ( 5, 0, 1),
+	SE_DEFAULT	= SE ( 6, 0, 1),
 
 	SE_ELLIPSIS	= SE ( 0, 1, 0),
+	SE_OPTIONAL	= SE ( 1, 1, 0),
 };
 
 #endif  /* ASN1_SE_H */
