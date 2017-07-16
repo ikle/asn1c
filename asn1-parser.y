@@ -53,6 +53,7 @@ int asn1_parse (struct se **o, void *scanner);
 	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER
 
 %token TOKEN_SIZE TOKEN_RANGE
+%token TOKEN_OPTIONAL
 
 %token '{' '}' '(' ')'
 %left ','
@@ -92,7 +93,7 @@ assignment
 	: TOKEN_TYPE[T] "::=" type[E]		{ $$ = se (SE_TYPE, $T, $E);	}
 	;
 
-type	: TOKEN_TYPE[T]	constrains[C]		{ $$ = se (SE_TYPEREF, $T, $C); }
+type	: TOKEN_TYPE[T]	constrains[C] defs	{ $$ = se (SE_TYPEREF, $T, $C); }
 	| TOKEN_ENUMERATED '{' consts[L] '}'	{ $$ = se (SE_ENUM, $L);	}
 	| TOKEN_SEQUENCE "OF" TOKEN_TYPE[T]	{ $$ = se (SE_SEQ_OF, $T);	}
 	| TOKEN_SET "OF"      TOKEN_TYPE[T]	{ $$ = se (SE_SET_OF, $T);	}
@@ -113,6 +114,10 @@ constrain
 size_constrain
 	: TOKEN_NUMBER[N]			{ $$ = $N;			}
 	| TOKEN_RANGE[R]			{ $$ = $R;			}
+	;
+
+defs	: TOKEN_OPTIONAL
+	|
 	;
 
 consts	: consts[H] ',' consts[T]		{ $$ = se (SE_LIST, $H, $T);	}

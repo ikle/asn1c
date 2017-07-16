@@ -69,6 +69,7 @@ NUMBER		[0-9]+
 	CHOICE			{ RET (CHOICE);			}
 
 	SIZE			{ RET (SIZE);			}
+	OPTIONAL		{ RET (OPTIONAL);		}
 
 	/* universal types */
 
