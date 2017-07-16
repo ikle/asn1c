@@ -35,7 +35,7 @@ static const char *se_name (const struct se *o)
 	case SE_LIST:		return "list";
 	case SE_MODULE:		return "module";
 	case SE_TYPE:		return "type";
-	case SE_TYPEREF:	return "ref";
+	case SE_TYPEREF:	return "type-ref";
 	case SE_FIELD:		return "field";
 
 	case SE_VALUE:		return "value";
