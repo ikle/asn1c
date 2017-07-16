@@ -49,10 +49,11 @@ int asn1_parse (struct se **o, void *scanner);
 
 %token TOKEN_TYPE TOKEN_ID
 %token TOKEN_NUMBER TOKEN_STRING
+%token TOKEN_RANGE
 %destructor { se_free ($$); }
-	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER TOKEN_STRING
+	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER TOKEN_STRING TOKEN_RANGE
 
-%token TOKEN_SIZE TOKEN_RANGE
+%token TOKEN_SIZE
 %token TOKEN_OPTIONAL TOKEN_DEFAULT
 
 %token '{' '}' '(' ')'
