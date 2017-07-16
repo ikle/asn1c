@@ -70,6 +70,7 @@ NUMBER		[0-9]+
 
 	SIZE			{ RET (SIZE);			}
 	OPTIONAL		{ RET (OPTIONAL);		}
+	DEFAULT			{ RET (DEFAULT);		}
 
 	/* universal types */
 

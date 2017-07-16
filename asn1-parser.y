@@ -53,7 +53,7 @@ int asn1_parse (struct se **o, void *scanner);
 	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER
 
 %token TOKEN_SIZE TOKEN_RANGE
-%token TOKEN_OPTIONAL
+%token TOKEN_OPTIONAL TOKEN_DEFAULT
 
 %token '{' '}' '(' ')'
 %left ','
@@ -117,7 +117,13 @@ size_constrain
 	;
 
 defs	: TOKEN_OPTIONAL
+	| TOKEN_DEFAULT constant
 	|
+	;
+
+constant
+	: TOKEN_ID				{ $$ = $1;			}
+	| TOKEN_NUMBER				{ $$ = $1;			}
 	;
 
 consts	: consts[H] ',' consts[T]		{ $$ = se (SE_LIST, $H, $T);	}
