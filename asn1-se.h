@@ -39,6 +39,7 @@ enum se_type
 	SE_SET		= SE ( 4, 0, 1),
 	SE_CHOICE	= SE ( 5, 0, 1),
 	SE_DEFAULT	= SE ( 6, 0, 1),
+	SE_SIZE		= SE ( 7, 0, 1),
 
 	SE_ELLIPSIS	= SE ( 0, 1, 0),
 	SE_OPTIONAL	= SE ( 1, 1, 0),

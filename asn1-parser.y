@@ -111,7 +111,7 @@ constrains
 	;
 
 constrain
-	: TOKEN_SIZE '(' size_constrain[C] ')'	{ $$ = $C;			}
+	: TOKEN_SIZE '(' size_constrain[C] ')'	{ $$ = se (SE_SIZE, $C);	}
 	;
 
 size_constrain
