@@ -56,25 +56,19 @@ static void indent (int level)
 	printf ("%*s", level * 3, "");
 }
 
-static void show_term (int level, const char *value)
-{
-	indent (level); printf ("%s", value);
-}
-
 static void show (int level, const struct se *o);
 
 static void show_args (int level, const struct se *o)
 {
 	int i;
 
-	for (i = 0; i < se_count (o->type); ++i) {
-		putchar ('\n');
-
+	for (i = 0; i < se_count (o->type); ++i)
 		if (se_is_terminal (o->type))
-			show_term  (level + 1, o->item[i]);
-		else
+			printf (" %s", o->item[i]);
+		else {
+			putchar ('\n');
 			show (level + 1, o->item[i]);
-	}
+		}
 }
 
 static void show_list (int level, const struct se *o)
