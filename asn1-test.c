@@ -56,8 +56,6 @@ static const char *se_name (const struct se *o)
 
 	case 0x02010:		return "INTEGER";
 	case 0x05010:		return "NULL";
-	case 0x12010:		return "NumericString";
-	case 0x13010:		return "PrintableString";
 	}
 
 	return NULL;

@@ -79,10 +79,6 @@ NUMBER		[0-9]+
 	NULL			{ TAG (5);			}
 	OBJECT{WS}IDENTIFIER	{ TAG (6);			}
 	REAL			{ TAG (9);			}
-	UTF8String		{ TAG (12);			}
-	NumericString		{ TAG (18);			}
-	PrintableString		{ TAG (19);			}
-	IA5String		{ TAG (22);			}
 	UTCTime			{ TAG (23);			}
 	GeneralizedTime		{ TAG (24);			}
 
