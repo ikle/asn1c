@@ -55,6 +55,7 @@ int asn1_parse (struct se **o, void *scanner);
 
 %token TOKEN_SIZE
 %token TOKEN_OPTIONAL TOKEN_DEFAULT
+%token TOKEN_TRUE TOKEN_FALSE
 
 %token '{' '}' '(' ')' ','
 
@@ -128,6 +129,8 @@ constant
 	| TOKEN_NUMBER				{ $$ = $1;			}
 	| TOKEN_STRING				{ $$ = $1;			}
 	| '{' oid_list '}'			{ $$ = $1;			}
+	| TOKEN_TRUE				{ $$ = se (SE_TRUE);		}
+	| TOKEN_FALSE				{ $$ = se (SE_FALSE);		}
 	;
 
 oid_list: const[C] oid_list[L]			{ $$ = se (SE_OID, $C, $L);	}

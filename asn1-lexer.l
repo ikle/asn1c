@@ -82,6 +82,11 @@ NUMBER		[0-9]+
 	UTCTime			{ TAG (23);			}
 	GeneralizedTime		{ TAG (24);			}
 
+	/* constants */
+
+	TRUE			{ RET (TRUE);			}
+	FALSE			{ RET (FALSE);			}
+
 	/* compound */
 
 	[A-Z]{NAME_TAIL}	{ SET (NAME);	RET (TYPE);	}

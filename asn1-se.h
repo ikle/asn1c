@@ -44,6 +44,8 @@ enum se_type
 
 	SE_ELLIPSIS	= SE ( 0, 1, 0),
 	SE_OPTIONAL	= SE ( 1, 1, 0),
+	SE_TRUE		= SE ( 2, 1, 0),
+	SE_FALSE	= SE ( 3, 1, 0),
 };
 
 #endif  /* ASN1_SE_H */
