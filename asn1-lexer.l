@@ -7,8 +7,6 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include <string.h>
-
 #include "asn1-parser.h"
 
 #define YY_USER_ACTION  (yylloc->first_line = yylineno);
@@ -23,7 +21,7 @@
 } while (0)
 
 #define SET(name)  do {					\
-	*yylval = se (SE_ ## name, strdup (yytext));	\
+	*yylval = se_term (SE_ ## name, yytext);	\
 } while (0)
 
 %}

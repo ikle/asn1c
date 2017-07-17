@@ -7,6 +7,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "se.h"
 
@@ -46,4 +47,22 @@ void se_free (struct se *o)
 		fn (o->item[i]);
 
 	free (o);
+}
+
+struct se *se_term (int type, const char *content)
+{
+	char *value;
+	struct se *o;
+
+	if (!se_is_terminal (type) || se_count (type) != 1 ||
+	    (value = strdup (content)) == NULL)
+		return NULL;
+
+	if ((o = se (type, value)) == NULL)
+		goto no_object;
+
+	return o;
+no_object:
+	free (value);
+	return NULL;
 }

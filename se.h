@@ -33,4 +33,6 @@ struct se
 struct se *se (int type, ...);
 void se_free (struct se *b);
 
+struct se *se_term (int type, const char *content);
+
 #endif  /* SE_H */
