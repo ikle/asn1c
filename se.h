@@ -32,14 +32,14 @@ struct se
 struct se_class {
 	const char *name;
 	void (*free) (struct se *o);
-	void (*show) (const struct se *o);
+	void (*show) (int level, const struct se *o);
 };
 
 #include <stdarg.h>
 
 struct se *se (int type, ...);
 void se_free (struct se *b);
-void se_show (const struct se *o);
+void se_show (int level, const struct se *o);
 
 struct se *se_term (int type, const char *content);
 

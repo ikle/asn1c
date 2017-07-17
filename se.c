@@ -22,9 +22,16 @@ static void se_base_free (struct se *o)
 	free (o);
 }
 
-static void se_base_show (const struct se *o)
+static void indent (int level)
+{
+	printf ("%*s", level * 4, "");
+}
+
+static void se_base_show (int level, const struct se *o)
 {
 	int i;
+
+	indent (level);
 
 	if (o->class->name != NULL)
 		printf ("(%s", o->class->name);
@@ -33,7 +40,7 @@ static void se_base_show (const struct se *o)
 
 	for (i = 0; i < se_count (o->type); ++i) {
 		putchar (' ');
-		se_show (o->item[i]);
+		se_show (0, o->item[i]);
 	}
 
 	putchar (')');
@@ -75,12 +82,12 @@ void se_free (struct se *o)
 	o->class->free (o);
 }
 
-void se_show (const struct se *o)
+void se_show (int level, const struct se *o)
 {
 	if (o == NULL)
 		printf ("(empty)");
 	else
-		o->class->show (o);
+		o->class->show (level, o);
 }
 
 static void se_term_free (struct se *o)
@@ -89,8 +96,10 @@ static void se_term_free (struct se *o)
 	free (o);
 }
 
-static void se_term_show (const struct se *o)
+static void se_term_show (int level, const struct se *o)
 {
+	indent (level);
+
 	if (o->class->name != NULL)
 		printf ("(%s", o->class->name);
 	else
