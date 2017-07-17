@@ -208,7 +208,7 @@ static void se_nt_list_show (int level, const struct se *se)
 	struct se_nt_list *o = (void *) se;
 
 	indent (level);
-	printf ("(%s ", o->base.class->name);
+	printf ("(%s", o->base.class->name);
 
 	for (; o != NULL; o = (void *) o->tail) {
 		putchar ('\n');
