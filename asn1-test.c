@@ -22,7 +22,7 @@ static struct se *get_ast (FILE *file)
 	return se;
 }
 
-static const char *se_name (const struct se *o)
+static const char *se_get_name (const struct se *o)
 {
 	switch (o->type) {
 	case SE_NAME:		return "name";
@@ -102,7 +102,7 @@ static void show_name (const struct se *o)
 {
 	const char *name;
 
-	if ((name = se_name (o)) != NULL)
+	if ((name = se_get_name (o)) != NULL)
 		printf ("%s", name);
 	else
 		printf ("%05x", o->type);
