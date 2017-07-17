@@ -25,13 +25,6 @@ static struct se *get_ast (FILE *file)
 static const char *se_get_name (const struct se *o)
 {
 	switch (o->type) {
-	case SE_NAME:		return "name";
-	case SE_COMMENT:	return "comment";
-	case SE_NUMBER:		return "num";
-	case SE_REAL:		return "real";
-	case SE_STRING:		return "string";
-	case SE_RANGE:		return "range";
-
 	case SE_LABEL:		return "label";
 	case SE_LIST:		return "list";
 	case SE_MODULE:		return "module";

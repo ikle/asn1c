@@ -15,13 +15,6 @@
 
 enum se_type
 {
-	SE_NAME		= SE ( 0, 1, 1),
-	SE_COMMENT	= SE ( 1, 1, 1),
-	SE_NUMBER	= SE ( 2, 1, 1),
-	SE_STRING	= SE ( 3, 1, 1),
-	SE_RANGE	= SE ( 4, 1, 1),
-	SE_REAL		= SE ( 5, 1, 1),
-
 	SE_LABEL	= SE ( 0, 0, 2),
 	SE_LIST		= SE ( 1, 0, 2),
 	SE_MODULE	= SE ( 2, 0, 2),
@@ -46,5 +39,16 @@ enum se_type
 	SE_TRUE		= SE ( 2, 1, 0),
 	SE_FALSE	= SE ( 3, 1, 0),
 };
+
+#define DECL_SE_ONE(one)  struct se *se_##one (const char *content)
+
+DECL_SE_ONE (name);
+DECL_SE_ONE (comment);
+DECL_SE_ONE (number);
+DECL_SE_ONE (string);
+DECL_SE_ONE (range);
+DECL_SE_ONE (real);
+
+#undef DECL_SE_ONE
 
 #endif  /* ASN1_SE_H */

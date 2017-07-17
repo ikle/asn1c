@@ -16,11 +16,11 @@
 } while (0)
 
 #define SET(name)  do {					\
-	*yylval = se_term (SE_ ## name, yytext);	\
+	*yylval = se_##name (yytext);			\
 } while (0)
 
 #define RET_UT(name, value)  do {			\
-	*yylval = se_term (SE_NAME, value);		\
+	*yylval = se_name (value);			\
 	RET (name);					\
 } while (0)
 
@@ -84,12 +84,12 @@ REAL		{NUMBER}[.]([0-9]*)?([eE]-?{NUMBER})?
 
 	/* compound */
 
-	[A-Z]{NAME_TAIL}	{ SET (NAME);	RET (TYPE);	}
-	[a-z]{NAME_TAIL}	{ SET (NAME);	RET (ID);	}
-	{NUMBER}[.]{2}{NUMBER}	{ SET (RANGE);	RET (RANGE);	}
-	{REAL}			{ SET (REAL);	RET (REAL);	}
-	{NUMBER}		{ SET (NUMBER);	RET (NUMBER);	}
-	\"(([^"]|\n|\"\")*)\"	{ SET (STRING);	RET (STRING);	}
+	[A-Z]{NAME_TAIL}	{ SET (name);	RET (TYPE);	}
+	[a-z]{NAME_TAIL}	{ SET (name);	RET (ID);	}
+	{NUMBER}[.]{2}{NUMBER}	{ SET (range);	RET (RANGE);	}
+	{REAL}			{ SET (real);	RET (REAL);	}
+	{NUMBER}		{ SET (number);	RET (NUMBER);	}
+	\"(([^"]|\n|\"\")*)\"	{ SET (string);	RET (STRING);	}
 
 	/* space, comment and simple */
 
