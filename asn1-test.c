@@ -88,11 +88,6 @@ static void show_list (int level, const struct se *o)
 	for (; o != NULL; o = tail) {
 		putchar ('\n');
 
-		if (o->type != SE_LIST) {  /* non-list leaf node */
-			show (level + 1, o);
-			break;
-		}
-
 		head = o->item[0], tail = o->item[1];
 
 		show (level + 1, head);
