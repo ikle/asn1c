@@ -28,12 +28,9 @@ enum se_type
 
 	SE_VALUE	= SE ( 0, 0, 3),
 	SE_TYPEREF	= SE ( 1, 0, 3),
-
-	SE_SEQ_OF	= SE ( 1, 0, 1),
-	SE_SET_OF	= SE ( 2, 0, 1),
-	SE_DEFAULT	= SE ( 6, 0, 1),
-	SE_SIZE		= SE ( 7, 0, 1),
 };
+
+/* declare terminals */
 
 #define DECL_SE_ZERO(name)  struct se *se_##name (void)
 
@@ -52,6 +49,17 @@ DECL_SE_ONE (range);
 DECL_SE_ONE (real);
 
 #undef DECL_SE_ZERO
+#undef DECL_SE_ONE
+
+/* declare non-terminals */
+
+#define DECL_SE_ONE(one)  struct se *se_##one (struct se *se)
+
+DECL_SE_ONE (seq_of);
+DECL_SE_ONE (set_of);
+DECL_SE_ONE (default);
+DECL_SE_ONE (size);
+
 #undef DECL_SE_ONE
 
 #endif  /* ASN1_SE_H */

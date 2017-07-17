@@ -17,6 +17,8 @@ static void indent (int level)
 	printf ("%*s", level * 4, "");
 }
 
+/* define terminals */
+
 static struct se *se_zero (const struct se_class *class)
 {
 	struct se *o;
@@ -112,5 +114,62 @@ DECL_SE_ONE (number)
 DECL_SE_ONE (string)
 DECL_SE_ONE (range)
 DECL_SE_ONE (real)
+
+#undef DECL_SE_ONE
+
+/* define non-terminals */
+
+struct se_nt_one {
+	struct se base;
+	struct se *value;
+};
+
+static struct se *se_nt_one (const struct se_class *class, struct se *se)
+{
+	struct se_nt_one *o;
+
+	if ((o = malloc (sizeof (*o))) == NULL)
+		return NULL;
+
+	o->base.class = class;
+	o->base.type  = 0;
+	o->value      = se;
+	return (void *) o;
+}
+
+static void se_nt_one_free (struct se *se)
+{
+	struct se_nt_one *o = (void *) se;
+
+	se_free (o->value);
+	free (o);
+}
+
+static void se_nt_one_show (int level, const struct se *se)
+{
+	struct se_nt_one *o = (void *) se;
+
+	indent (level);
+	printf ("(%s ", o->base.class->name);
+	se_show (0, o->value);
+	putchar (')');
+}
+
+#define DECL_SE_ONE(type, typename)			\
+static const struct se_class se_##type##_class = {	\
+	.name = typename,				\
+	.free = se_nt_one_free,				\
+	.show = se_nt_one_show,				\
+};							\
+							\
+struct se *se_##type (struct se *se)			\
+{							\
+	return se_nt_one (&se_##type##_class, se);	\
+}
+
+DECL_SE_ONE (seq_of,  "seq-of")
+DECL_SE_ONE (set_of,  "set-of")
+DECL_SE_ONE (default, "default")
+DECL_SE_ONE (size,    "size")
 
 #undef DECL_SE_ONE

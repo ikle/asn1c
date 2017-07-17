@@ -35,15 +35,10 @@ static const char *se_get_name (const struct se *o)
 	case SE_VALUE:		return "value";
 
 	case SE_ENUM:		return "enum";
-	case SE_SEQ_OF:		return "seq-of";
-	case SE_SET_OF:		return "set-of";
 	case SE_SEQ:		return "seq";
 	case SE_SET:		return "set";
 	case SE_CHOICE:		return "choice";
 	case SE_OID:		return "oid";
-
-	case SE_DEFAULT:	return "default";
-	case SE_SIZE:		return "size";
 	}
 
 	return NULL;

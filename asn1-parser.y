@@ -98,8 +98,8 @@ assignment
 
 type	: TOKEN_TYPE[T]	constrains[C] defs[D]	{ $$ = se (SE_TYPEREF, $T, $C, $D); }
 	| TOKEN_ENUMERATED '{' enum[L]   '}'	{ $$ = $L;			}
-	| TOKEN_SEQUENCE "OF" TOKEN_TYPE[T]	{ $$ = se (SE_SEQ_OF, $T);	}
-	| TOKEN_SET "OF"      TOKEN_TYPE[T]	{ $$ = se (SE_SET_OF, $T);	}
+	| TOKEN_SEQUENCE "OF" TOKEN_TYPE[T]	{ $$ = se_seq_of ($T);		}
+	| TOKEN_SET "OF"      TOKEN_TYPE[T]	{ $$ = se_set_of ($T);		}
 	| TOKEN_SEQUENCE '{' sequence[L] '}'	{ $$ = $L;			}
 	| TOKEN_SET      '{' set[L]      '}'	{ $$ = $L;			}
 	| TOKEN_CHOICE   '{' choice[L]   '}'	{ $$ = $L;			}
@@ -111,7 +111,7 @@ constrains
 	;
 
 constrain
-	: TOKEN_SIZE '(' size_constrain[C] ')'	{ $$ = se (SE_SIZE, $C);	}
+	: TOKEN_SIZE '(' size_constrain[C] ')'	{ $$ = se_size ($C);		}
 	;
 
 size_constrain
@@ -120,7 +120,7 @@ size_constrain
 	;
 
 defs	: TOKEN_OPTIONAL			{ $$ = se_optional ();		}
-	| TOKEN_DEFAULT constant[C]		{ $$ = se (SE_DEFAULT, $C);	}
+	| TOKEN_DEFAULT constant[C]		{ $$ = se_default ($C);		}
 	| /* empty */				{ $$ = NULL;			}
 	;
 
