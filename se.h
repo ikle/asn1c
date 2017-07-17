@@ -12,8 +12,6 @@
 struct se
 {
 	const struct se_class *class;
-	int type;
-	void *item[];
 };
 
 struct se_class {
