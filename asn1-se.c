@@ -239,3 +239,34 @@ DECL_SE_LIST (choice)
 
 #undef DECL_SE_LIST
 
+static void se_nt_two_show (int level, const struct se *se)
+{
+	struct se_nt_list *o = (void *) se;
+
+	indent (level);
+	printf ("(%s", o->base.class->name);
+
+	putchar ('\n'); se_show (level + 1, o->head);
+	putchar ('\n'); se_show (level + 1, o->tail);
+
+	putchar (')');
+}
+
+#define DECL_SE_TWO(type)					\
+static const struct se_class se_##type##_class = {		\
+	.name = #type,						\
+	.free = se_nt_list_free,				\
+	.show = se_nt_two_show,					\
+};								\
+								\
+struct se *se_##type (struct se *head, struct se *tail)		\
+{								\
+	return se_nt_list (&se_##type##_class, head, tail);	\
+}
+
+DECL_SE_TWO (label)
+DECL_SE_TWO (module)
+DECL_SE_TWO (type)
+DECL_SE_TWO (field)
+
+#undef DECL_SE_TWO

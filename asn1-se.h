@@ -15,11 +15,6 @@
 
 enum se_type
 {
-	SE_LABEL	= SE ( 0, 0, 2),
-	SE_MODULE	= SE ( 2, 0, 2),
-	SE_TYPE		= SE ( 3, 0, 2),
-	SE_FIELD	= SE ( 5, 0, 2),
-
 	SE_VALUE	= SE ( 0, 0, 3),
 	SE_TYPEREF	= SE ( 1, 0, 3),
 };
@@ -64,7 +59,16 @@ DECL_SE_LIST (seq);
 DECL_SE_LIST (set);
 DECL_SE_LIST (choice);
 
+#define DECL_SE_TWO(type)  \
+	struct se *se_##type (struct se *a, struct se *b)
+
+DECL_SE_TWO (label);
+DECL_SE_TWO (module);
+DECL_SE_TWO (type);
+DECL_SE_TWO (field);
+
 #undef DECL_SE_ONE
+#undef DECL_SE_TWO
 #undef DECL_SE_LIST
 
 #endif  /* ASN1_SE_H */

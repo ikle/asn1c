@@ -71,7 +71,7 @@ modules : module[H] modules[T]			{ $$ = se_list ($H, $T);	}
 module	: TOKEN_TYPE[M] TOKEN_DEFINITIONS def_tags "::="
 	  TOKEN_BEGIN
 		assignments[L]
-	  TOKEN_END				{ $$ = se (SE_MODULE, $M, $L);	}
+	  TOKEN_END				{ $$ = se_module ($M, $L);	}
 	;
 
 def_tags
@@ -91,7 +91,7 @@ assignments
 	;
 
 assignment
-	: TOKEN_TYPE[T] "::=" type[E]		{ $$ = se (SE_TYPE, $T, $E);	}
+	: TOKEN_TYPE[T] "::=" type[E]		{ $$ = se_type ($T, $E);	}
 	| TOKEN_ID[I] TOKEN_TYPE[T] "::=" constant[C]
 						{ $$ = se (SE_VALUE, $I, $T, $C); }
 	;
@@ -142,9 +142,9 @@ enum	: label[C] ',' enum[L]			{ $$ = se_enum ($C, $L);	}
 	| label[C]				{ $$ = se_enum ($C, NULL);	}
 	;
 
-label	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_LABEL, $I,   $N);	}
-	| TOKEN_ID[I]				{ $$ = se (SE_LABEL, $I, NULL);	}
-	| TOKEN_NUMBER[N]			{ $$ = se (SE_LABEL, NULL, $N);	}
+label	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se_label ($I,   $N);	}
+	| TOKEN_ID[I]				{ $$ = se_label ($I, NULL);	}
+	| TOKEN_NUMBER[N]			{ $$ = se_label (NULL, $N);	}
 	;
 
 seq	: field[F] ',' seq[L]			{ $$ = se_seq ($F, $L);		}
@@ -159,7 +159,7 @@ choice	: field[F] ',' choice[L]		{ $$ = se_choice ($F, $L);	}
 	| field[F]				{ $$ = se_choice ($F, NULL); 	}
 	;
 
-field	: TOKEN_ID[I] type[T]			{ $$ = se (SE_FIELD, $I, $T);	}
+field	: TOKEN_ID[I] type[T]			{ $$ = se_field ($I, $T);	}
 	| "..."					{ $$ = se_ellipsis ();	}
 	;
 
