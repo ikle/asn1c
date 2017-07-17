@@ -22,16 +22,6 @@ static struct se *get_ast (FILE *file)
 	return se;
 }
 
-static const char *se_get_name (const struct se *o)
-{
-	switch (o->type) {
-	case SE_TYPEREF:	return "type-ref";
-	case SE_VALUE:		return "value";
-	}
-
-	return NULL;
-}
-
 static void indent (int level)
 {
 	printf ("%*s", level * 4, "");
@@ -56,16 +46,6 @@ static void show_args (int level, const struct se *o)
 		}
 }
 
-static void show_name (const struct se *o)
-{
-	const char *name;
-
-	if ((name = se_get_name (o)) != NULL)
-		printf ("%s", name);
-	else
-		printf ("%05x", o->type);
-}
-
 static void show (int level, const struct se *o)
 {
 	int i;
@@ -77,7 +57,7 @@ static void show (int level, const struct se *o)
 
 	indent (level); putchar ('(');
 
-	show_name (o);
+	printf ("%05x", o->type);
 	show_args (level, o);
 
 	putchar (')');

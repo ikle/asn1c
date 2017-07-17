@@ -7,6 +7,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#include <stddef.h>
 #include "se.h"
 
 #define yylex    asn1_lex
@@ -93,10 +94,10 @@ assignments
 assignment
 	: TOKEN_TYPE[T] "::=" type[E]		{ $$ = se_type ($T, $E);	}
 	| TOKEN_ID[I] TOKEN_TYPE[T] "::=" constant[C]
-						{ $$ = se (SE_VALUE, $I, $T, $C); }
+						{ $$ = se_value ($I, $T, $C);	}
 	;
 
-type	: TOKEN_TYPE[T]	constrains[C] defs[D]	{ $$ = se (SE_TYPEREF, $T, $C, $D); }
+type	: TOKEN_TYPE[T]	constrains[C] defs[D]	{ $$ = se_typeref ($T, $C, $D);	}
 	| TOKEN_ENUMERATED '{' enum[L]   '}'	{ $$ = $L;			}
 	| TOKEN_SEQUENCE "OF" TOKEN_TYPE[T]	{ $$ = se_seq_of ($T);		}
 	| TOKEN_SET "OF"      TOKEN_TYPE[T]	{ $$ = se_set_of ($T);		}

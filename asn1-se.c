@@ -270,3 +270,65 @@ DECL_SE_TWO (type)
 DECL_SE_TWO (field)
 
 #undef DECL_SE_TWO
+
+struct se_nt_three {
+	struct se base;
+	struct se *a, *b, *c;
+};
+
+static struct se *se_nt_three (const struct se_class *class,
+			       struct se *a, struct se *b, struct se *c)
+{
+	struct se_nt_three *o;
+
+	if ((o = malloc (sizeof (*o))) == NULL)
+		return NULL;
+
+	o->base.class = class;
+	o->base.type  = 0;
+	o->a = a;
+	o->b = b;
+	o->c = c;
+	return (void *) o;
+}
+
+static void se_nt_three_free (struct se *se)
+{
+	struct se_nt_three *o = (void *) se;
+
+	se_free (o->a);
+	se_free (o->b);
+	se_free (o->c);
+	free (o);
+}
+
+static void se_nt_three_show (int level, const struct se *se)
+{
+	struct se_nt_three *o = (void *) se;
+
+	indent (level);
+	printf ("(%s", o->base.class->name);
+
+	putchar ('\n'); se_show (level + 1, o->a);
+	putchar ('\n'); se_show (level + 1, o->b);
+	putchar ('\n'); se_show (level + 1, o->c);
+
+	putchar (')');
+}
+
+#define DECL_SE_THREE(type, typename)					\
+static const struct se_class se_##type##_class = {			\
+	.name = typename,						\
+	.free = se_nt_three_free,					\
+	.show = se_nt_three_show,					\
+};									\
+									\
+struct se *se_##type (struct se *a, struct se *b, struct se *c)		\
+{									\
+	return se_nt_three (&se_##type##_class, a, b, c);		\
+}
+
+DECL_SE_THREE (typeref, "type-ref")
+DECL_SE_THREE (value,   "value")
+
+#undef DECL_SE_THREE

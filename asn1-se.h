@@ -9,15 +9,7 @@
 #ifndef ASN1_SE_H
 #define ASN1_SE_H  1
 
-#include <stddef.h>
-
 #include "se.h"
-
-enum se_type
-{
-	SE_VALUE	= SE ( 0, 0, 3),
-	SE_TYPEREF	= SE ( 1, 0, 3),
-};
 
 /* declare terminals */
 
@@ -67,8 +59,15 @@ DECL_SE_TWO (module);
 DECL_SE_TWO (type);
 DECL_SE_TWO (field);
 
+#define DECL_SE_THREE(type)  \
+	struct se *se_##type (struct se *a, struct se *b, struct se *c)
+
+DECL_SE_THREE (typeref);
+DECL_SE_THREE (value);
+
 #undef DECL_SE_ONE
 #undef DECL_SE_TWO
 #undef DECL_SE_LIST
+#undef DECL_SE_THREE
 
 #endif  /* ASN1_SE_H */
