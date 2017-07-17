@@ -48,10 +48,10 @@ int asn1_parse (struct se **o, void *scanner);
 %token TOKEN_ENUMERATED TOKEN_SEQUENCE TOKEN_SET TOKEN_CHOICE
 
 %token TOKEN_TYPE TOKEN_ID
-%token TOKEN_NUMBER TOKEN_STRING
+%token TOKEN_NUMBER TOKEN_REAL TOKEN_STRING
 %token TOKEN_RANGE
 %destructor { se_free ($$); }
-	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER TOKEN_STRING TOKEN_RANGE
+	TOKEN_TYPE TOKEN_ID TOKEN_NUMBER TOKEN_REAL TOKEN_STRING TOKEN_RANGE
 
 %token TOKEN_SIZE
 %token TOKEN_OPTIONAL TOKEN_DEFAULT
@@ -127,6 +127,7 @@ defs	: TOKEN_OPTIONAL			{ $$ = se (SE_OPTIONAL);	}
 constant
 	: TOKEN_ID				{ $$ = $1;			}
 	| TOKEN_NUMBER				{ $$ = $1;			}
+	| TOKEN_REAL				{ $$ = $1;			}
 	| TOKEN_STRING				{ $$ = $1;			}
 	| '{' oid_list '}'			{ $$ = $1;			}
 	| TOKEN_TRUE				{ $$ = se (SE_TRUE);		}

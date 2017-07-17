@@ -40,6 +40,7 @@ NL		[\n\v\f\r]
 SIMPLE		[{}<>,./()[\]\-:="';@|!^]
 NAME_TAIL	(-?[0-9A-Za-z])*
 NUMBER		[0-9]+
+REAL		{NUMBER}[.]([0-9]*)?([eE]-?{NUMBER})?
 
 %%
 	BEGIN (INITIAL);
@@ -89,6 +90,7 @@ NUMBER		[0-9]+
 	[A-Z]{NAME_TAIL}	{ SET (NAME);	RET (TYPE);	}
 	[a-z]{NAME_TAIL}	{ SET (NAME);	RET (ID);	}
 	{NUMBER}[.]{2}{NUMBER}	{ SET (RANGE);	RET (RANGE);	}
+	{REAL}			{ SET (REAL);	RET (REAL);	}
 	{NUMBER}		{ SET (NUMBER);	RET (NUMBER);	}
 	\"(([^"]|\n|\"\")*)\"	{ SET (STRING);	RET (STRING);	}
 
