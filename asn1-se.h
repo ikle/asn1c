@@ -13,8 +13,6 @@
 
 #include "se.h"
 
-#define ASN1_SE_TAG(class, number)  (SE ((number) << 4 | class, 1, 0))
-
 enum se_type
 {
 	SE_NAME		= SE ( 0, 1, 1),

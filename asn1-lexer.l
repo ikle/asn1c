@@ -15,13 +15,13 @@
 	return TOKEN_ ## name;				\
 } while (0)
 
-#define TAG(number)  do {				\
-	*yylval = se (ASN1_SE_TAG (0, number));		\
-	RET (TYPE);					\
-} while (0)
-
 #define SET(name)  do {					\
 	*yylval = se_term (SE_ ## name, yytext);	\
+} while (0)
+
+#define RET_UT(name, value)  do {			\
+	*yylval = se_term (SE_NAME, value);		\
+	RET (name);					\
 } while (0)
 
 %}
@@ -71,11 +71,11 @@ REAL		{NUMBER}[.]([0-9]*)?([eE]-?{NUMBER})?
 	OPTIONAL		{ RET (OPTIONAL);		}
 	DEFAULT			{ RET (DEFAULT);		}
 
-	/* universal types */
+	/* strange universal types with spaces in name */
 
-	BIT{WS}STRING		{ TAG (3);			}
-	OCTET{WS}STRING		{ TAG (4);			}
-	OBJECT{WS}IDENTIFIER	{ TAG (6);			}
+	BIT{WS}STRING		{ RET_UT (TYPE, "BIT STRING");	}
+	OCTET{WS}STRING		{ RET_UT (TYPE, "OCTET STRING"); }
+	OBJECT{WS}IDENTIFIER	{ RET_UT (TYPE, "OBJECT IDENTIFIER"); }
 
 	/* constants */
 

@@ -105,7 +105,7 @@ static void show_name (const struct se *o)
 	if ((name = se_name (o)) != NULL)
 		printf ("%s", name);
 	else
-		printf ("tag %d", o->type >> 12);
+		printf ("%05x", o->type);
 }
 
 static void show (int level, const struct se *o)
