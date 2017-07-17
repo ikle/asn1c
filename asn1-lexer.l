@@ -76,8 +76,6 @@ REAL		{NUMBER}[.]([0-9]*)?([eE]-?{NUMBER})?
 	BIT{WS}STRING		{ TAG (3);			}
 	OCTET{WS}STRING		{ TAG (4);			}
 	OBJECT{WS}IDENTIFIER	{ TAG (6);			}
-	UTCTime			{ TAG (23);			}
-	GeneralizedTime		{ TAG (24);			}
 
 	/* constants */
 
