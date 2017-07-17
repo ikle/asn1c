@@ -50,7 +50,7 @@ static void se_base_show (int level, const struct se *o)
 	putchar (')');
 }
 
-static struct se_class se_base_class = {
+static const struct se_class se_base_class = {
 	.free = se_base_free,
 	.show = se_base_show,
 };
@@ -114,7 +114,7 @@ static void se_term_show (int level, const struct se *o)
 	printf (" %s)", o->item[0]);
 }
 
-static struct se_class se_term_class = {
+static const struct se_class se_term_class = {
 	.free = se_term_free,
 	.show = se_term_show,
 };
