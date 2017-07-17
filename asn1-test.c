@@ -55,9 +55,6 @@ static const char *se_name (const struct se *o)
 	case SE_OPTIONAL:	return "optional";
 	case SE_TRUE:		return "true";
 	case SE_FALSE:		return "false";
-
-	case 0x02010:		return "INTEGER";
-	case 0x05010:		return "NULL";
 	}
 
 	return NULL;

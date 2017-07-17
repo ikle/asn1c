@@ -72,11 +72,8 @@ NUMBER		[0-9]+
 
 	/* universal types */
 
-	BOOLEAN			{ TAG (1);			}
-	INTEGER			{ TAG (2);			}
 	BIT{WS}STRING		{ TAG (3);			}
 	OCTET{WS}STRING		{ TAG (4);			}
-	NULL			{ TAG (5);			}
 	OBJECT{WS}IDENTIFIER	{ TAG (6);			}
 	REAL			{ TAG (9);			}
 	UTCTime			{ TAG (23);			}
