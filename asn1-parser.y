@@ -100,9 +100,9 @@ type	: TOKEN_TYPE[T]	constrains[C] defs[D]	{ $$ = se (SE_TYPEREF, $T, $C, $D); }
 	| TOKEN_ENUMERATED '{' enum[L]   '}'	{ $$ = $L;			}
 	| TOKEN_SEQUENCE "OF" TOKEN_TYPE[T]	{ $$ = se_seq_of ($T);		}
 	| TOKEN_SET "OF"      TOKEN_TYPE[T]	{ $$ = se_set_of ($T);		}
-	| TOKEN_SEQUENCE '{' sequence[L] '}'	{ $$ = $L;			}
-	| TOKEN_SET      '{' set[L]      '}'	{ $$ = $L;			}
-	| TOKEN_CHOICE   '{' choice[L]   '}'	{ $$ = $L;			}
+	| TOKEN_SEQUENCE '{' seq[L]    '}'	{ $$ = $L;			}
+	| TOKEN_SET      '{' set[L]    '}'	{ $$ = $L;			}
+	| TOKEN_CHOICE   '{' choice[L] '}'	{ $$ = $L;			}
 	;
 
 constrains
@@ -147,7 +147,7 @@ label	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_LABEL, $I,   $N);	}
 	| TOKEN_NUMBER[N]			{ $$ = se (SE_LABEL, NULL, $N);	}
 	;
 
-sequence: field[F] ',' sequence[L]		{ $$ = se_seq ($F, $L);		}
+seq	: field[F] ',' seq[L]			{ $$ = se_seq ($F, $L);		}
 	| field[F]				{ $$ = se_seq ($F, NULL);	}
 	;
 
