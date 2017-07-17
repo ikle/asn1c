@@ -119,12 +119,11 @@ static void show (int level, const struct se *o)
 
 	switch (o->type) {
 	case SE_LIST:
-		show_list (level, o); break;
+	case SE_ENUM:
 	case SE_SEQ:
 	case SE_SET:
 	case SE_CHOICE:
-		putchar ('\n'); show (level + 1, o->item[0]);
-		putchar ('\n'); show (level + 1, o->item[1]);
+		show_list (level, o); break;
 		break;
 	default:
 		show_args (level, o); break;
