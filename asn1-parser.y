@@ -56,8 +56,7 @@ int asn1_parse (struct se **o, void *scanner);
 %token TOKEN_SIZE
 %token TOKEN_OPTIONAL TOKEN_DEFAULT
 
-%token '{' '}' '(' ')'
-%right ','
+%token '{' '}' '(' ')' ','
 
 %%
 
@@ -130,21 +129,24 @@ constant
 	| TOKEN_STRING				{ $$ = $1;			}
 	;
 
-enum	: enum[H] ',' enum[T]			{ $$ = se (SE_ENUM, $H, $T);	}
-	| TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_CONST, $I,   $N);	}
+enum	: const[C] ',' enum[L]			{ $$ = se (SE_ENUM, $C, $L);	}
+	| const[C]				{ $$ = se (SE_ENUM, $C, NULL);	}
+	;
+
+const	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_CONST, $I,   $N);	}
 	| TOKEN_NUMBER[N]			{ $$ = se (SE_CONST, NULL, $N);	}
 	;
 
-sequence: sequence[H] ',' sequence[T]		{ $$ = se (SE_SEQ, $H, $T);	}
-	| field[F]				{ $$ = $F;			}
+sequence: field[F] ',' sequence[L]		{ $$ = se (SE_SEQ, $F, $L);	}
+	| field[F]				{ $$ = se (SE_SEQ, $F, NULL);	}
 	;
 
-set	: set[H] ',' set[T]			{ $$ = se (SE_SET, $H, $T);	}
-	| field[F]				{ $$ = $F;			}
+set	: field[F] ',' set[L]			{ $$ = se (SE_SET, $F, $L);	}
+	| field[F]				{ $$ = se (SE_SET, $F, NULL);	}
 	;
 
-choice	: choice[H] ',' choice[T]		{ $$ = se (SE_CHOICE, $H, $T);	}
-	| field[F]				{ $$ = $F;			}
+choice	: field[F] ',' choice[L]		{ $$ = se (SE_CHOICE, $F, $L);	}
+	| field[F]				{ $$ = se (SE_CHOICE, $F, NULL); }
 	;
 
 field	: TOKEN_ID[I] type[T]			{ $$ = se (SE_FIELD, $I, $T);	}
