@@ -17,6 +17,24 @@ static void indent (int level)
 	printf ("%*s", level * 4, "");
 }
 
+void se_free (struct se *o)
+{
+	if (o == NULL)
+		return;
+
+	o->class->free (o);
+}
+
+void se_show (int level, const struct se *o)
+{
+	if (o == NULL) {
+		indent (level);
+		printf ("(empty)");
+	}
+	else
+		o->class->show (level, o);
+}
+
 /* define terminals */
 
 static struct se *se_zero (const struct se_class *class)

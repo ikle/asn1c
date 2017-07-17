@@ -22,4 +22,4 @@ install: $(TARGETS)
 		--defines=$(patsubst %.y,%.h, $<) $<
 
 asn1-lexer.o: asn1-parser.h
-asn1-test: se.o asn1-se.o asn1-lexer.o asn1-parser.o
+asn1-test: asn1-se.o asn1-lexer.o asn1-parser.o
