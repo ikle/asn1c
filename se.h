@@ -41,6 +41,4 @@ struct se *se (int type, ...);
 void se_free (struct se *b);
 void se_show (int level, const struct se *o);
 
-struct se *se_term (int type, const char *content);
-
 #endif  /* SE_H */

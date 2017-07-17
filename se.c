@@ -8,7 +8,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "se.h"
 
@@ -94,46 +93,4 @@ void se_show (int level, const struct se *o)
 	}
 	else
 		o->class->show (level, o);
-}
-
-static void se_term_free (struct se *o)
-{
-	free (o->item[0]);
-	free (o);
-}
-
-static void se_term_show (int level, const struct se *o)
-{
-	indent (level);
-
-	if (o->class->name != NULL)
-		printf ("(%s", o->class->name);
-	else
-		printf ("(%05x", o->type);
-
-	printf (" %s)", o->item[0]);
-}
-
-static const struct se_class se_term_class = {
-	.free = se_term_free,
-	.show = se_term_show,
-};
-
-struct se *se_term (int type, const char *content)
-{
-	char *value;
-	struct se *o;
-
-	if (!se_is_terminal (type) || se_count (type) != 1 ||
-	    (value = strdup (content)) == NULL)
-		return NULL;
-
-	if ((o = se (type, value)) == NULL)
-		goto no_object;
-
-	o->class = &se_term_class;
-	return o;
-no_object:
-	free (value);
-	return NULL;
 }
