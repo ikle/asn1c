@@ -38,9 +38,13 @@ static void se_base_show (int level, const struct se *o)
 	else
 		printf ("(%05x", o->type);
 
-	for (i = 0; i < se_count (o->type); ++i) {
+	if (se_count (o->type) == 1) {
 		putchar (' ');
 		se_show (0, o->item[i]);
+	}
+	else for (i = 0; i < se_count (o->type); ++i) {
+		putchar ('\n');
+		se_show (level + 1, o->item[i]);
 	}
 
 	putchar (')');
