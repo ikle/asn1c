@@ -112,12 +112,12 @@ static void show (int level, const struct se *o)
 {
 	int i;
 
-	indent (level); putchar ('(');
-
-	if (o == NULL) {
-		printf ("empty)");
+	if (o == NULL || o->type == 0) {
+		se_show (level, o);
 		return;
 	}
+
+	indent (level); putchar ('(');
 
 	show_name (o);
 
