@@ -6,6 +6,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,8 +22,26 @@ static void se_base_free (struct se *o)
 	free (o);
 }
 
+static void se_base_show (const struct se *o)
+{
+	int i;
+
+	if (o->class->name != NULL)
+		printf ("(%s", o->class->name);
+	else
+		printf ("(%05x", o->type);
+
+	for (i = 0; i < se_count (o->type); ++i) {
+		putchar (' ');
+		se_show (o->item[i]);
+	}
+
+	putchar (')');
+}
+
 static struct se_class se_base_class = {
 	.free = se_base_free,
+	.show = se_base_show,
 };
 
 struct se *se (int type, ...)
@@ -56,14 +75,33 @@ void se_free (struct se *o)
 	o->class->free (o);
 }
 
+void se_show (const struct se *o)
+{
+	if (o == NULL)
+		printf ("(nil)");
+	else
+		o->class->show (o);
+}
+
 static void se_term_free (struct se *o)
 {
 	free (o->item[0]);
 	free (o);
 }
 
+static void se_term_show (const struct se *o)
+{
+	if (o->class->name != NULL)
+		printf ("(%s", o->class->name);
+	else
+		printf ("(%05x", o->type);
+
+	printf (" %s)", o->item[0]);
+}
+
 static struct se_class se_term_class = {
 	.free = se_term_free,
+	.show = se_term_show,
 };
 
 struct se *se_term (int type, const char *content)
