@@ -32,6 +32,7 @@ enum se_type
 	SE_SEQ		= SE ( 7, 0, 2),
 	SE_SET		= SE ( 8, 0, 2),
 	SE_CHOICE	= SE ( 9, 0, 2),
+	SE_OID		= SE (10, 0, 2),
 
 	SE_VALUE	= SE ( 0, 0, 3),
 	SE_TYPEREF	= SE ( 1, 0, 3),

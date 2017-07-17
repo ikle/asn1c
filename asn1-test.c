@@ -46,6 +46,8 @@ static const char *se_name (const struct se *o)
 	case SE_SEQ:		return "seq";
 	case SE_SET:		return "set";
 	case SE_CHOICE:		return "choice";
+	case SE_OID:		return "oid";
+
 	case SE_DEFAULT:	return "default";
 	case SE_SIZE:		return "size";
 

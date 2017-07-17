@@ -127,6 +127,11 @@ constant
 	: TOKEN_ID				{ $$ = $1;			}
 	| TOKEN_NUMBER				{ $$ = $1;			}
 	| TOKEN_STRING				{ $$ = $1;			}
+	| '{' oid_list '}'			{ $$ = $1;			}
+	;
+
+oid_list: const[C] oid_list[L]			{ $$ = se (SE_OID, $C, $L);	}
+	| const[C]				{ $$ = se (SE_OID, $C, NULL);	}
 	;
 
 enum	: const[C] ',' enum[L]			{ $$ = se (SE_ENUM, $C, $L);	}
