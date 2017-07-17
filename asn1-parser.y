@@ -97,12 +97,12 @@ assignment
 	;
 
 type	: TOKEN_TYPE[T]	constrains[C] defs[D]	{ $$ = se (SE_TYPEREF, $T, $C, $D); }
-	| TOKEN_ENUMERATED '{' consts[L] '}'	{ $$ = se (SE_ENUM, $L);	}
+	| TOKEN_ENUMERATED '{' enum[L]   '}'	{ $$ = $L;			}
 	| TOKEN_SEQUENCE "OF" TOKEN_TYPE[T]	{ $$ = se (SE_SEQ_OF, $T);	}
 	| TOKEN_SET "OF"      TOKEN_TYPE[T]	{ $$ = se (SE_SET_OF, $T);	}
-	| TOKEN_SEQUENCE fields[L]		{ $$ = se (SE_SEQ, $L);		}
-	| TOKEN_SET      fields[L]		{ $$ = se (SE_SET, $L);		}
-	| TOKEN_CHOICE   fields[L]		{ $$ = se (SE_CHOICE, $L);	}
+	| TOKEN_SEQUENCE '{' sequence[L] '}'	{ $$ = $L;			}
+	| TOKEN_SET      '{' set[L]      '}'	{ $$ = $L;			}
+	| TOKEN_CHOICE   '{' choice[L]   '}'	{ $$ = $L;			}
 	;
 
 constrains
@@ -130,17 +130,24 @@ constant
 	| TOKEN_STRING				{ $$ = $1;			}
 	;
 
-consts	: consts[H] ',' consts[T]		{ $$ = se (SE_LIST, $H, $T);	}
+enum	: enum[H] ',' enum[T]			{ $$ = se (SE_ENUM, $H, $T);	}
 	| TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_CONST, $I,   $N);	}
 	| TOKEN_NUMBER[N]			{ $$ = se (SE_CONST, NULL, $N);	}
 	;
 
-fields	: '{' field_list[L] '}'			{ $$ = $L;			}
+sequence: sequence[H] ',' sequence[T]		{ $$ = se (SE_SEQ, $H, $T);	}
+	| field[F]				{ $$ = $F;			}
 	;
 
-field_list
-	: field_list[H] ',' field_list[T]	{ $$ = se (SE_LIST, $H, $T);	}
-	| TOKEN_ID[I] type[T]			{ $$ = se (SE_FIELD, $I, $T);	}
+set	: set[H] ',' set[T]			{ $$ = se (SE_SET, $H, $T);	}
+	| field[F]				{ $$ = $F;			}
+	;
+
+choice	: choice[H] ',' choice[T]		{ $$ = se (SE_CHOICE, $H, $T);	}
+	| field[F]				{ $$ = $F;			}
+	;
+
+field	: TOKEN_ID[I] type[T]			{ $$ = se (SE_FIELD, $I, $T);	}
 	| "..."					{ $$ = se (SE_ELLIPSIS);	}
 	;
 

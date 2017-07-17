@@ -128,7 +128,9 @@ static void show (int level, const struct se *o)
 	case SE_SEQ:
 	case SE_SET:
 	case SE_CHOICE:
-		show_list (level, o->item[0]); break;
+		putchar ('\n'); show (level + 1, o->item[0]);
+		putchar ('\n'); show (level + 1, o->item[1]);
+		break;
 	default:
 		show_args (level, o); break;
 	}
