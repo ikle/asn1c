@@ -134,17 +134,17 @@ constant
 	| TOKEN_FALSE				{ $$ = se (SE_FALSE);		}
 	;
 
-oid_list: const[C] oid_list[L]			{ $$ = se (SE_OID, $C, $L);	}
-	| const[C]				{ $$ = se (SE_OID, $C, NULL);	}
+oid_list: label[C] oid_list[L]			{ $$ = se (SE_OID, $C, $L);	}
+	| label[C]				{ $$ = se (SE_OID, $C, NULL);	}
 	;
 
-enum	: const[C] ',' enum[L]			{ $$ = se (SE_ENUM, $C, $L);	}
-	| const[C]				{ $$ = se (SE_ENUM, $C, NULL);	}
+enum	: label[C] ',' enum[L]			{ $$ = se (SE_ENUM, $C, $L);	}
+	| label[C]				{ $$ = se (SE_ENUM, $C, NULL);	}
 	;
 
-const	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_CONST, $I,   $N);	}
-	| TOKEN_ID[I]				{ $$ = se (SE_CONST, $I, NULL);	}
-	| TOKEN_NUMBER[N]			{ $$ = se (SE_CONST, NULL, $N);	}
+label	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_LABEL, $I,   $N);	}
+	| TOKEN_ID[I]				{ $$ = se (SE_LABEL, $I, NULL);	}
+	| TOKEN_NUMBER[N]			{ $$ = se (SE_LABEL, NULL, $N);	}
 	;
 
 sequence: field[F] ',' sequence[L]		{ $$ = se (SE_SEQ, $F, $L);	}

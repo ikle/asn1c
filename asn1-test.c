@@ -32,7 +32,7 @@ static const char *se_name (const struct se *o)
 	case SE_STRING:		return "string";
 	case SE_RANGE:		return "range";
 
-	case SE_CONST:		return "const";
+	case SE_LABEL:		return "label";
 	case SE_LIST:		return "list";
 	case SE_MODULE:		return "module";
 	case SE_TYPE:		return "type";

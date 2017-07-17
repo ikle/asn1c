@@ -24,7 +24,7 @@ enum se_type
 	SE_RANGE	= SE ( 4, 1, 1),
 	SE_REAL		= SE ( 5, 1, 1),
 
-	SE_CONST	= SE ( 0, 0, 2),
+	SE_LABEL	= SE ( 0, 0, 2),
 	SE_LIST		= SE ( 1, 0, 2),
 	SE_MODULE	= SE ( 2, 0, 2),
 	SE_TYPE		= SE ( 3, 0, 2),
