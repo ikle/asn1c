@@ -173,3 +173,69 @@ DECL_SE_ONE (default, "default")
 DECL_SE_ONE (size,    "size")
 
 #undef DECL_SE_ONE
+
+struct se_nt_list {
+	struct se base;
+	struct se *head, *tail;
+};
+
+static struct se *se_nt_list (const struct se_class *class,
+			      struct se *head, struct se *tail)
+{
+	struct se_nt_list *o;
+
+	if ((o = malloc (sizeof (*o))) == NULL)
+		return NULL;
+
+	o->base.class = class;
+	o->base.type  = 0;
+	o->head       = head;
+	o->tail       = tail;
+	return (void *) o;
+}
+
+static void se_nt_list_free (struct se *se)
+{
+	struct se_nt_list *o = (void *) se;
+
+	se_free (o->head);
+	se_free (o->tail);
+	free (o);
+}
+
+static void se_nt_list_show (int level, const struct se *se)
+{
+	struct se_nt_list *o = (void *) se;
+
+	indent (level);
+	printf ("(%s ", o->base.class->name);
+
+	for (; o != NULL; o = o->tail) {
+		putchar ('\n');
+		se_show (level + 1, o->head);
+	}
+
+	putchar (')');
+}
+
+#define DECL_SE_LIST(type)					\
+static const struct se_class se_##type##_class = {		\
+	.name = #type,						\
+	.free = se_nt_list_free,				\
+	.show = se_nt_list_show,				\
+};								\
+								\
+struct se *se_##type (struct se *head, struct se *tail)		\
+{								\
+	return se_nt_list (&se_##type##_class, head, tail);	\
+}
+
+DECL_SE_LIST (list)
+DECL_SE_LIST (oid)
+DECL_SE_LIST (enum)
+DECL_SE_LIST (seq)
+DECL_SE_LIST (set)
+DECL_SE_LIST (choice)
+
+#undef DECL_SE_LIST
+

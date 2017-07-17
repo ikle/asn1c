@@ -64,7 +64,7 @@ int asn1_parse (struct se **o, void *scanner);
 input	: modules[L]	{ *o = $L; }
 	;
 
-modules : module[H] modules[T]			{ $$ = se (SE_LIST, $H, $T);	}
+modules : module[H] modules[T]			{ $$ = se_list ($H, $T);	}
 	| /* empty */				{ $$ = NULL;			}
 	;
 
@@ -86,7 +86,7 @@ tag_type
 	;
 
 assignments
-	: assignment[H] assignments[T]		{ $$ = se (SE_LIST, $H, $T);	}
+	: assignment[H] assignments[T]		{ $$ = se_list ($H, $T);	}
 	| /* empty */				{ $$ = NULL;			}
 	;
 
@@ -134,12 +134,12 @@ constant
 	| TOKEN_FALSE				{ $$ = se_false ();		}
 	;
 
-oid	: label[C] oid[L]			{ $$ = se (SE_OID, $C, $L);	}
-	| label[C]				{ $$ = se (SE_OID, $C, NULL);	}
+oid	: label[C] oid[L]			{ $$ = se_oid ($C, $L);		}
+	| label[C]				{ $$ = se_oid ($C, NULL);	}
 	;
 
-enum	: label[C] ',' enum[L]			{ $$ = se (SE_ENUM, $C, $L);	}
-	| label[C]				{ $$ = se (SE_ENUM, $C, NULL);	}
+enum	: label[C] ',' enum[L]			{ $$ = se_enum ($C, $L);	}
+	| label[C]				{ $$ = se_enum ($C, NULL);	}
 	;
 
 label	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_LABEL, $I,   $N);	}
@@ -147,16 +147,16 @@ label	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_LABEL, $I,   $N);	}
 	| TOKEN_NUMBER[N]			{ $$ = se (SE_LABEL, NULL, $N);	}
 	;
 
-sequence: field[F] ',' sequence[L]		{ $$ = se (SE_SEQ, $F, $L);	}
-	| field[F]				{ $$ = se (SE_SEQ, $F, NULL);	}
+sequence: field[F] ',' sequence[L]		{ $$ = se_seq ($F, $L);		}
+	| field[F]				{ $$ = se_seq ($F, NULL);	}
 	;
 
-set	: field[F] ',' set[L]			{ $$ = se (SE_SET, $F, $L);	}
-	| field[F]				{ $$ = se (SE_SET, $F, NULL);	}
+set	: field[F] ',' set[L]			{ $$ = se_set ($F, $L);		}
+	| field[F]				{ $$ = se_set ($F, NULL);	}
 	;
 
-choice	: field[F] ',' choice[L]		{ $$ = se (SE_CHOICE, $F, $L);	}
-	| field[F]				{ $$ = se (SE_CHOICE, $F, NULL); }
+choice	: field[F] ',' choice[L]		{ $$ = se_choice ($F, $L);	}
+	| field[F]				{ $$ = se_choice ($F, NULL); 	}
 	;
 
 field	: TOKEN_ID[I] type[T]			{ $$ = se (SE_FIELD, $I, $T);	}

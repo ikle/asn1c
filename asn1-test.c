@@ -26,19 +26,12 @@ static const char *se_get_name (const struct se *o)
 {
 	switch (o->type) {
 	case SE_LABEL:		return "label";
-	case SE_LIST:		return "list";
 	case SE_MODULE:		return "module";
 	case SE_TYPE:		return "type";
 	case SE_TYPEREF:	return "type-ref";
 	case SE_FIELD:		return "field";
 
 	case SE_VALUE:		return "value";
-
-	case SE_ENUM:		return "enum";
-	case SE_SEQ:		return "seq";
-	case SE_SET:		return "set";
-	case SE_CHOICE:		return "choice";
-	case SE_OID:		return "oid";
 	}
 
 	return NULL;
@@ -68,19 +61,6 @@ static void show_args (int level, const struct se *o)
 		}
 }
 
-static void show_list (int level, const struct se *o)
-{
-	const struct se *head, *tail;
-
-	for (; o != NULL; o = tail) {
-		putchar ('\n');
-
-		head = o->item[0], tail = o->item[1];
-
-		show (level + 1, head);
-	}
-}
-
 static void show_name (const struct se *o)
 {
 	const char *name;
@@ -103,18 +83,7 @@ static void show (int level, const struct se *o)
 	indent (level); putchar ('(');
 
 	show_name (o);
-
-	switch (o->type) {
-	case SE_LIST:
-	case SE_ENUM:
-	case SE_SEQ:
-	case SE_SET:
-	case SE_CHOICE:
-		show_list (level, o); break;
-		break;
-	default:
-		show_args (level, o); break;
-	}
+	show_args (level, o);
 
 	putchar (')');
 }
