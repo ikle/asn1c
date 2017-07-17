@@ -119,7 +119,7 @@ size_constrain
 	| TOKEN_RANGE[R]			{ $$ = $R;			}
 	;
 
-defs	: TOKEN_OPTIONAL			{ $$ = se (SE_OPTIONAL);	}
+defs	: TOKEN_OPTIONAL			{ $$ = se_optional ();		}
 	| TOKEN_DEFAULT constant[C]		{ $$ = se (SE_DEFAULT, $C);	}
 	| /* empty */				{ $$ = NULL;			}
 	;
@@ -130,8 +130,8 @@ constant
 	| TOKEN_REAL				{ $$ = $1;			}
 	| TOKEN_STRING				{ $$ = $1;			}
 	| '{' oid '}'				{ $$ = $1;			}
-	| TOKEN_TRUE				{ $$ = se (SE_TRUE);		}
-	| TOKEN_FALSE				{ $$ = se (SE_FALSE);		}
+	| TOKEN_TRUE				{ $$ = se_true ();		}
+	| TOKEN_FALSE				{ $$ = se_false ();		}
 	;
 
 oid	: label[C] oid[L]			{ $$ = se (SE_OID, $C, $L);	}
@@ -160,7 +160,7 @@ choice	: field[F] ',' choice[L]		{ $$ = se (SE_CHOICE, $F, $L);	}
 	;
 
 field	: TOKEN_ID[I] type[T]			{ $$ = se (SE_FIELD, $I, $T);	}
-	| "..."					{ $$ = se (SE_ELLIPSIS);	}
+	| "..."					{ $$ = se_ellipsis ();	}
 	;
 
 %%

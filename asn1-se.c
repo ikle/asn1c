@@ -17,6 +17,43 @@ static void indent (int level)
 	printf ("%*s", level * 4, "");
 }
 
+static struct se *se_zero (const struct se_class *class)
+{
+	struct se *o;
+
+	if ((o = malloc (sizeof (*o))) == NULL)
+		return NULL;
+
+	o->class = class;
+	o->type  = 0;
+	return o;
+}
+
+static void se_zero_show (int level, const struct se *o)
+{
+	indent (level);
+	printf ("(%s)", o->class->name);
+}
+
+#define DECL_SE_ZERO(type)				\
+static const struct se_class se_##type##_class = {	\
+	.name = #type,					\
+	.free = (void (*) ()) free,			\
+	.show = se_zero_show,				\
+};							\
+							\
+struct se *se_##type (void)				\
+{							\
+	return se_zero (&se_##type##_class);		\
+}
+
+DECL_SE_ZERO (ellipsis)
+DECL_SE_ZERO (optional)
+DECL_SE_ZERO (true)
+DECL_SE_ZERO (false)
+
+#undef DECL_SE_ZERO
+
 struct se_one {
 	struct se base;
 	char *value;

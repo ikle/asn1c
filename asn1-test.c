@@ -44,11 +44,6 @@ static const char *se_get_name (const struct se *o)
 
 	case SE_DEFAULT:	return "default";
 	case SE_SIZE:		return "size";
-
-	case SE_ELLIPSIS:	return "ellipsis";
-	case SE_OPTIONAL:	return "optional";
-	case SE_TRUE:		return "true";
-	case SE_FALSE:		return "false";
 	}
 
 	return NULL;

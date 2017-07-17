@@ -33,12 +33,14 @@ enum se_type
 	SE_SET_OF	= SE ( 2, 0, 1),
 	SE_DEFAULT	= SE ( 6, 0, 1),
 	SE_SIZE		= SE ( 7, 0, 1),
-
-	SE_ELLIPSIS	= SE ( 0, 1, 0),
-	SE_OPTIONAL	= SE ( 1, 1, 0),
-	SE_TRUE		= SE ( 2, 1, 0),
-	SE_FALSE	= SE ( 3, 1, 0),
 };
+
+#define DECL_SE_ZERO(name)  struct se *se_##name (void)
+
+DECL_SE_ZERO (ellipsis);
+DECL_SE_ZERO (optional);
+DECL_SE_ZERO (true);
+DECL_SE_ZERO (false);
 
 #define DECL_SE_ONE(one)  struct se *se_##one (const char *content)
 
@@ -49,6 +51,7 @@ DECL_SE_ONE (string);
 DECL_SE_ONE (range);
 DECL_SE_ONE (real);
 
+#undef DECL_SE_ZERO
 #undef DECL_SE_ONE
 
 #endif  /* ASN1_SE_H */
