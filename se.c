@@ -78,7 +78,7 @@ void se_free (struct se *o)
 void se_show (const struct se *o)
 {
 	if (o == NULL)
-		printf ("(nil)");
+		printf ("(empty)");
 	else
 		o->class->show (o);
 }

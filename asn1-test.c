@@ -115,7 +115,7 @@ static void show (int level, const struct se *o)
 	indent (level); putchar ('(');
 
 	if (o == NULL) {
-		printf ("nil)");
+		printf ("empty)");
 		return;
 	}
 
