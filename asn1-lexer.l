@@ -39,7 +39,7 @@ WS		[\t\n\v\f\r ]+
 NL		[\n\v\f\r]
 SIMPLE		[{}<>,./()[\]\-:="';@|!^]
 NAME_TAIL	(-?[0-9A-Za-z])*
-NUMBER		[0-9]+
+NUMBER		0|[1-9][0-9]*
 REAL		{NUMBER}[.]([0-9]*)?([eE]-?{NUMBER})?
 
 %%
