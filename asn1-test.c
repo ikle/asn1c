@@ -75,6 +75,10 @@ static void show_args (int level, const struct se *o)
 	for (i = 0; i < se_count (o->type); ++i)
 		if (se_is_terminal (o->type))
 			printf (" %s", o->item[i]);
+		else if (se_count (o->type) == 1) {
+			putchar (' ');
+			show (0, o->item[i]);
+		}
 		else {
 			putchar ('\n');
 			show (level + 1, o->item[i]);
