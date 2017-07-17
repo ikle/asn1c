@@ -139,6 +139,7 @@ enum	: const[C] ',' enum[L]			{ $$ = se (SE_ENUM, $C, $L);	}
 	;
 
 const	: TOKEN_ID[I] '(' TOKEN_NUMBER[N] ')'	{ $$ = se (SE_CONST, $I,   $N);	}
+	| TOKEN_ID[I]				{ $$ = se (SE_CONST, $I, NULL);	}
 	| TOKEN_NUMBER[N]			{ $$ = se (SE_CONST, NULL, $N);	}
 	;
 
