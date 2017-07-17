@@ -129,12 +129,12 @@ constant
 	| TOKEN_NUMBER				{ $$ = $1;			}
 	| TOKEN_REAL				{ $$ = $1;			}
 	| TOKEN_STRING				{ $$ = $1;			}
-	| '{' oid_list '}'			{ $$ = $1;			}
+	| '{' oid '}'				{ $$ = $1;			}
 	| TOKEN_TRUE				{ $$ = se (SE_TRUE);		}
 	| TOKEN_FALSE				{ $$ = se (SE_FALSE);		}
 	;
 
-oid_list: label[C] oid_list[L]			{ $$ = se (SE_OID, $C, $L);	}
+oid	: label[C] oid[L]			{ $$ = se (SE_OID, $C, $L);	}
 	| label[C]				{ $$ = se (SE_OID, $C, NULL);	}
 	;
 
