@@ -88,8 +88,10 @@ void se_free (struct se *o)
 
 void se_show (int level, const struct se *o)
 {
-	if (o == NULL)
+	if (o == NULL) {
+		indent (level);
 		printf ("(empty)");
+	}
 	else
 		o->class->show (level, o);
 }
