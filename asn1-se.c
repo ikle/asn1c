@@ -89,7 +89,7 @@ static struct se *se_one (const struct se_class *class, const char *content)
 		goto no_value;
 
 	o->base.class = class;
-	return (void *) o;
+	return &o->base;
 no_value:
 	free (o);
 no_object:
@@ -149,7 +149,7 @@ static struct se *se_nt_one (const struct se_class *class, struct se *se)
 
 	o->base.class = class;
 	o->value      = se;
-	return (void *) o;
+	return &o->base;
 }
 
 static void se_nt_one_free (struct se *se)
@@ -205,7 +205,7 @@ static struct se *se_nt_list (const struct se_class *class,
 	o->base.class = class;
 	o->head       = head;
 	o->tail       = tail;
-	return (void *) o;
+	return &o->base;
 }
 
 static void se_nt_list_free (struct se *se)
@@ -302,7 +302,7 @@ static struct se *se_nt_three (const struct se_class *class,
 	o->a = a;
 	o->b = b;
 	o->c = c;
-	return (void *) o;
+	return &o->base;
 }
 
 static void se_nt_three_free (struct se *se)
