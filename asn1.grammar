@@ -1,0 +1,1073 @@
+# ASN.1 Grammar Rules
+
+# NOTE: XML support (and IRI) removed
+
+# 13 Module definition
+
+module-definition
+	: module-identifier 'DEFINITIONS'
+	  encoding-reference-default tag-default extension-default
+	  '::=' 'BEGIN' module-body encoding-control-sections 'END'
+
+module-identifier
+	: module-reference definitive-identification
+
+definitive-identification
+	: definitive-oid
+	| empty
+
+definitive-oid
+	: '{' definitive-oid-compoment-list '}'
+
+definitive-oid-compoment-list
+	: definitive-oid-compoment
+	| definitive-oid-compoment definitive-oid-compoment-list
+
+definitive-oid-compoment
+	: name-form
+	| definitive-number-form
+	| definitive-name-and-number-form
+
+definitive-number-form
+	: number
+
+definitive-name-and-number-form
+	: identifier '(' definitive-number-form ')
+
+encoding-reference-default
+	: encoding-reference 'INSTRUCTIONS'
+	| empty
+
+tag-default
+	: 'EXSPLICIT' 'TAGS'
+	| 'IMPLICIT'  'TAGS'
+	| 'AUTOMATIC' 'TAGS'
+	| empty
+
+extension-default
+	: 'EXTENSIBILITY' 'IMPLIED'
+	| empty
+
+module-body
+	: exports imports assignment-list
+	| empty
+
+exports
+	: 'EXPORTS' symbols-exported ';'
+	| 'EXPORTS' 'ALL' ';'
+	| empty
+
+symbols-exported
+	: symbol-list
+	| empty
+
+imports
+	: 'IMPORTS' symbols-imported ';'
+	| empty
+
+symbols-imported
+	: symbols-from-module-list
+	| empty
+
+symbols-from-module-list
+	: symbols-from-module
+	| symbols-from-module symbols-from-module-list
+
+symbols-from-module
+	: symbol-list 'FROM' global-module-reference
+
+global-module-reference
+	: module-reference assigned-identifier
+
+assigned-identifier
+	: oid-value
+	| defined-value
+	| empty
+
+symbol-list
+	: symbol
+	| symbol ',' symbol-list
+
+symbol
+	: reference
+#	| parametrized-reference	-- X.683
+
+reference
+	: type-reference
+	| value-reference
+	| object-class-reference
+	| object-reference
+	| object-set-reference
+
+assignment-list
+	: assignment
+	| assignment assignment-list
+
+assignment
+	: type-assignment
+	| value-assignment
+	| value-set-type-assignment
+#	| object-class-assignment	-- X.681  9.1
+#	| object-assignment		-- X.681 11.1
+#	| object-set-assignment		-- X.681 12.1
+#	| parametrized-assignment	-- X.681  8.1
+
+# NOTE 5: The character semicolon does not appear in the assignment list
+# specification or any of its subordinate productions, and is reserved for
+# use by ASN.1 tool developers.
+
+# 14 Referencing type and value definitions
+
+defined-type
+	: external-type-reference
+	| type-reference
+#	| parametrized-type		-- X.683
+#	| parametrized-value-set-type	-- X.683
+
+defined-value
+	: external-value-reference
+	| value-reference
+#	| parametrized-value		-- X.683
+
+external-type-reference
+	: module-reference '.' type-reference
+
+external-value-reference
+	: module-reference '.' value-reference
+
+# 16 Assigning types and values
+
+type-assignment
+	: type-reference '::=' type
+
+value-assignment
+	: value-reference type '::=' value
+
+value-assignment
+	: value-reference '::' value
+
+value-set-type-assignment
+	: type-reference type '::=' value-set
+
+value-set
+	: '{' element-set-specs '}'
+
+# 17 Definition of types and values
+
+type
+	: builtin-type
+	| referenced-type
+	| constrained-type
+
+builtin-type
+	: bit-string-type
+	| boolean-type
+	| character-string-type
+	| choice-type
+	| date-type
+	| date-time-type
+	| duration-type
+	| embedded-pdv-type
+	| enumerated-type
+	| external-type
+#	| instance-of-type		-- X.681, Annex C
+	| integer-type
+	| null-type
+#	| object-class-field-type	-- X.681, 14.1
+	| oid-type
+	| octet-string-type
+	| real-type
+	| relative-oid-type
+	| sequence-type
+	| sequence-of-type
+	| set-type
+	| set-of-type
+	| prefixed-type
+	| time-type
+	| time-of-day-type
+
+referenced-type
+	: defined-type
+	| useful-type
+	| selection-type
+#	| type-from-object		-- X.681, 15
+#	| value-set-from-object		-- X.681, 15
+
+named-type
+	: identifier type
+
+value
+	: builtin-value
+	| referenced-value
+#	| object-class-field-value	-- X.681, 14.6
+
+builtin-value
+	: bit-string-value
+	| boolean-value
+	| character-string-value
+	| choice-value
+	| embedded-pdv-value
+	| enumerated-value
+	| external-value
+#	| instance-of-value		-- X.681, Annex C
+	| integer-value
+	| null-value
+	| oid-value
+	| octet-string-value
+	| real-value
+	| relative-oid-value
+	| sequence-value
+	| sequence-of-value
+	| set-value
+	| set-of-value
+	| prefixed-value
+	| time-value
+
+referenced-value
+	: defined-value
+#	| value-from-object		-- X.681, 15
+
+named-value
+	: identifier value
+
+# 18 Notation for the boolean type
+
+boolean-type
+	: 'BOOLEAN'
+
+# 18.2 The tag for types defined by this notation is universal class, number 1.
+
+boolean-value
+	: 'TRUE'
+	| 'FALSE'
+
+# 19 Notation for the integer type
+
+integer-type
+	: 'INTEGER'
+	| 'INTEGER' '{' named-number-list '}'
+
+named-number-list
+	: named-number
+	| named-number ',' named-number-list
+
+named-number
+	: identifier '(' signed-number ')'
+	| identifier '(' defined-value ')'
+
+signed-number
+	: number
+	| '-' number
+
+# 19.8 The tag for types defined by this notation is universal class, number 2.
+
+integer-value
+	: signed-number
+	| identifier
+
+# 20 Notation for the enumerated type
+
+enumerated-type
+	: 'ENUMERATED' '{' enumerations '}'
+
+enumerations
+	: root-enumeration
+	| root-enumeration ',' '...' exception-spec
+	| root-enumeration ',' '...' exception-spec ','  additional-enumeration
+
+root-enumeration
+	: enumeration
+
+additional-enumeration
+	: enumeration
+
+enumeration
+	: enumeration-item
+	| enumeration-item ',' enumeration
+
+enumeration-item
+	: identifier
+	| named-number
+
+# 20.7 The enumerated type has a tag which is universal class, number 10.
+
+enumerated-value
+	: identifier
+
+# 21 Notation for the real type
+
+real-type
+	: 'REAL'
+
+# 21.2 The real type has a tag which is universal class, number 9.
+
+# 21.5 associated type and restriction
+
+real-value
+	: numeric-real-value
+	| special-real-value
+
+numeric-real-value
+	: real-number
+	| '-' real-numner
+	| sequence-value
+
+special-real-value
+	: 'PLUS-INFINITY'
+	| 'MINUS-INFINITY'
+	| 'NOT-A-NUMBER'
+
+# 22 Notation for the bitstring type
+
+bit-string-type
+	: 'BIT' 'STRING'
+	| 'BIT' 'STRING' '{' named-bit-list '}'
+
+named-bit-list
+	: named-bit
+	| named-bit ',' named-bit-list
+
+named-bit
+	: identifier '(' number ')'
+	| identifier '(' defined-value ')'
+
+# 22.8 This type has a tag which is universal class, number 3.
+
+bit-string-value
+	: b-string
+	| h-string
+	|'{' identifier-list '}'
+	| '{' '}'
+#	| 'CONTAINING' value		-- X.682, 11
+
+identifier-list
+	: identifier
+	| identifier ',' identifier-list
+
+# 23 Notation for the octetstring type
+
+octet-string-type
+	: 'OCTET' 'STRING'
+
+# This type has a tag which is universal class, number 4.
+
+octet-string-value
+	: b-string
+	| h-string
+#	| 'CONTAINING' value		-- X.682, 11
+
+# 24 Notation for the null type
+
+null-type
+	: 'NULL'
+
+# 24.2 This type has a tag which is universal class, number 5.
+
+null-value
+	: 'NULL'
+
+# 25 Notation for sequence types
+
+sequence-type
+	: 'SEQUENCE' '{' '}'
+	| 'SEQUENCE' '{' extension-and-exception optional-extension-marker '}'
+	| 'SEQUENCE' '{' component-type-lists '}'
+
+extension-and-exception
+	: '...'
+	| '...' exception-spec
+
+optional-extension-marker
+	: ',' '...'
+	| empty
+
+component-type-lists
+	: root-component-type-list
+	| root-component-type-list ',' extension-and-exception
+	  extension-additions optional-extension-marker
+	| root-component-type-list ',' extension-and-exception
+	  extension-additions extension-end-marker ','
+	  root-component-type-list
+	| extension-and-exception extension-additions extension-end-marker ','
+	  root-component-type-list
+	| extension-and-exception extension-additions optional-extension-marker
+
+root-component-type-list
+	: component-type-list
+
+extension-end-marker
+	: ',' '...'
+
+extension-additions
+	: ',' extension-addition-list
+	| empty
+
+extension-addition-list
+	: extension-addition
+	| extension-addition ',' extension-addition-list
+
+extension-addition
+	: component-type
+	| extension-addition-group
+
+extension-addition-group
+	: '[[' version-number component-type-list  ']]'
+
+component-type-list
+	: component-type
+	| component-type ',' component-type-list
+
+component-type
+	: named-type
+	| named-type 'OPTIONAL'
+	| named-type 'DEFAULT' value
+	| 'COMPONENTS' 'OF' type
+
+# 25.17 All sequence types have a tag which is universal class, number 16.
+
+sequence-value
+	: '{' component-value-list '}'
+	| '{' '}'
+
+component-value-list
+	: named-value
+	| named-value ',' component-value-list
+
+# 26 Notation for sequence-of types
+
+sequence-ot-type
+	: 'SEQUENCE' 'OF' type
+	| 'SEQUENCE' 'OF' named-type
+
+# 26.2 All sequence-of types have a tag which is universal class, number 16.
+
+sequence-of-value
+	: '{' value-list '}'
+	| '{' named-value-list '}'
+	| '{' '}'
+
+value-list
+	: value
+	| value ',' value-list
+
+named-value-list
+	: named-value
+	| named-value ',' named-value-list
+
+# 27 Notation for set types
+
+set-type
+	: 'SET' '{' '}'
+	| 'SET' '{' extension-and-exception optional-extension-marker '}'
+	| 'SET' '{' component-type-list '}'
+
+# 27.5 All set types have a tag which is universal class, number 17.
+
+set-value
+	: '{' component-value-list '}'
+	| '{' '}'
+
+# 28 Notation for set-of types
+
+set-of-type
+	: 'SET' 'OF' type
+	| 'SET' 'OF' named-type
+
+# 28.2 All set-of types have a tag which is universal class, number 17.
+
+set-of-value
+	: '{' value-list '}'
+	| '{' named-value-list '}'
+	| '{' '}
+
+# 29 Notation for choice types
+
+coice-type
+	: 'CHOICE' '{' alternative-type-lists '}'
+
+alternative-type-lists
+	: root-alternative-type-list
+	| root-alternative-type-list ',' extension-and-exception
+	  extension-addition-alternatives optional-extension-marker
+
+root-alternative-type-list
+	: alternative-type-list
+
+extension-addition-alternatives
+	: ',' extension-addition-alternative-list
+	| empty
+
+extension-addition-alternative-list
+	: extension-addition-alternative
+	| extension-addition-alternative ',' extension-addition-alternative-list
+
+extension-addition-alternative
+	: extension-addition-alternative-group
+	| named-type
+
+extension-addition-alternative-group
+	: '[[' version-number alternative-type-list ']]'
+
+alternative-type-list
+	: named-type
+	| named-type ',' alternative-type-list
+
+choice-value
+	: identifier ':' value
+
+# 30 Notation for selection types
+
+selection-type
+	: identifier '<' type
+
+# 31 Notation for prefixed types
+
+prefixed-type
+	: tagged-type
+	| encodig-prefixed-type
+
+prefixed-value
+	: value
+
+tagged-type
+	: tag type
+	| tag 'IMPLICIT' type
+	| tag 'EXPLICIT' type
+
+tag
+	: '[' encoding-reference-spec class class-number ']'
+
+encoding-reference-spec
+	: encoding-reference ':'
+	| empty
+
+class
+	: 'UNIVERSAL'
+	| 'APPLICATION'
+	| 'PRIVATE'
+	| empty
+
+class-number
+	: number
+	| defined-value
+
+encodig-prefixed-type
+	: encodig-prefix type
+
+encodig-prefix
+	: '[' encoding-reference-spec encoding-instruction ']'
+
+# 32 Notation for the object identifier type
+
+oid-type
+	: 'OBJECT' 'IDENTIFIER'
+
+# 32.2 This type has a tag which is universal class, number 6.
+
+oid-value
+	: '{' oid-compoment-list '}'
+	| '{' defined-value oid-compoment-list '}'
+
+oid-compoment-list
+	: oid-compoment
+	| oid-compoment oid-compoment-list
+
+oid-compoment
+	: name-form
+	| number-form
+	| name-and-number-form
+	| defined-value
+
+name-form
+	: identifier
+
+number-form
+	: number
+	| defined-value
+
+name-and-number-form
+	: identifier '(' number-form ')'
+
+# 33 Notation for the relative object identifier type
+
+relative-oid-type
+	: 'RELATIVE-OID'
+
+# 33.2 This type has a tag which is universal class, number 13.
+
+relative-oid-value
+	: '{' relative-oid-compoment-list '}'
+
+relative-oid-compoment-list
+	: relative-oid-compoment
+	| relative-oid-compoment relative-oid-compoment-list
+
+relative-oid-compoment
+	| number-form
+	| name-and-number-form
+	| defined-value
+
+# 36 Notation for the embedded-pdv type
+
+embedded-pdv-type
+	: 'EMBEDDED' 'PDV'
+
+# Historically, it meant "Embedded Presentation Data Value" from its use in
+# the OSI Presentation Layer, but this expansion is not used today, and it
+# should be interpreted as "embedded value".
+
+# 36.2 This type has a tag which is universal class, number 11.
+
+# 36.4 associated type
+
+embedded-pdv-value
+	: sequence-value
+
+# 37 Notation for the external type
+
+external-type
+	: 'EXTERNAL'
+
+# 37.2 This type has a tag which is universal class, number 8.
+
+# 37.4 associated type
+
+external-value
+	: sequence-value
+
+# 38 The time type
+
+time-type
+	: 'TIME'
+
+# 38.1.2 The tag for types defined by this notation is universal class, number 14.
+
+time-value
+	: t-string
+
+# 38.4 Useful time types
+
+date-type
+	: 'DATE'
+
+# DATE ::= [UNIVERSAL 31] IMPLICIT TIME
+# (SETTINGS "Basic=Date Date=YMD Year=Basic")
+
+time-of-day
+	: 'TIME-OF-DAY'
+
+# TIME-OF-DAY ::= [UNIVERSAL 32] IMPLICIT TIME
+# (SETTINGS "Basic=Time Time=HMS Local-or-UTC=L")
+
+date-time-type
+	: 'DATE-TIME'
+
+# DATE-TIME ::= [UNIVERSAL 33] IMPLICIT TIME
+# (SETTINGS "Basic=Date-Time Date=YMD Year=Basic Time=HMS Local-or-UTC=L")
+
+# NOTE: This type allows midnight at start of day (00:00:00) as well as
+# midnight at end of day (24:00:00).
+
+duration-type
+	: 'DURATION'
+
+# DURATION ::= [UNIVERSAL 34] IMPLICIT TIME
+# (SETTINGS "Basic=Interval Interval-type=D")
+
+# 38.4.4.2 The DURATION-EQUIVALENT equivalent sequence type
+
+# 40 Notation for character string types
+
+character-string-type
+	: restricted-character-string-type
+	| unrestricted-character-string-type
+
+character-string-value
+	: restricted-character-string-value
+	| unrestricted-character-string-value
+
+# 41 Definition of restricted character string types
+
+restricted-character-string-type
+	: 'BMPString'
+	| 'GeneralString'
+	| 'GraphicString'
+	| 'IA5String'
+	| 'ISO646String'
+	| 'NumericString'
+	| 'PrintableString'
+	| 'TeletexString'
+	| 'T61String'
+	| 'UniversalString'
+	| 'UTF8String'
+	| 'VideotexString'
+	| 'VisibleString'
+
+# 41.2 Table 9 — NumericString
+
+# +-------------+---------------+
+# | Name	| Graphic	|
+# +-------------+---------------+
+# | Digits	| 0, 1, ... 9	|
+# | Space	| (space)	|
+# +-------------+---------------+
+
+# 41.3 NumericString OID
+
+# { joint-iso-itu-t asn1(1) specification(0) characterStrings(1)
+#   numericString(0) }
+
+# may be encoded by:
+# a. One of the rules given in ISO/IEC 10646 for encoding the abstract
+#    characters. In this case the character transfer syntax is identified by
+#    the object identifier associated with those rules in ISO/IEC 10646,
+#    Annex N.
+# b. The ASN.1 encoding rules for the built-in type NumericString. In this
+#    case the character transfer syntax is identified by the object
+#    identifier value {joint-iso-itu-t asn1(1) basic-encoding(1)}.
+
+# 41.4 Table 10 — PrintableString
+
+# +---------------------+---------------+
+# | Name		| Graphic	|
+# +---------------------+---------------+
+# | Latin capital	| A, B, ... Z	|
+# | Latin small		| a, b, ... z	|
+# | Digits		| 0, 1, ... 0	|
+# | Space		| (space)	|
+# | Apostrophe		| '		|
+# | Left Parenthesis	| (		|
+# | Right Parenthesis	| )		|
+# | Plus sign		| +		|
+# | Comma		| ,		|
+# | Hypen-minus		| -		|
+# | Full stop		| .		|
+# | Solidus		| /		|
+# | Colon		| :		|
+# | Equals sign		| =		|
+# | Question mark	| ?		|
+# +---------------------+---------------+
+
+# 41.4 PrintableString OID
+
+# { joint-iso-itu-t asn1(1) specification(0) characterStrings(1)
+#   printableString(1) }
+
+# may be encoded by:
+# a. Same as for NumericString for ISO/IEC 10646.
+# b. The ASN.1 encoding rules for the built-in type PrintableString. In this
+#    case the character transfer syntax is identified by the object
+#    identifier { joint-iso-itu-t asn1(1) basic-encoding(1) }.
+
+# 41.6 The characters which can appear in the UniversalString type are any
+# of the characters allowed by ISO/IEC 10646.
+
+restricted-character-string-value
+	: c-string
+	| character-string-list
+	| quadruple
+	| tuple
+
+character-string
+	: '{' char-syms '}'
+
+char-syms
+	: char-defn
+	| char-defn ',' char-syms
+
+char-defn
+	: c-string
+	| quadruple
+	| tuple
+	| defined-value
+
+quadruple
+	: '{' group ',' plane ',' row ',' cell '}'
+
+group	: number
+plane	: number
+row	: number
+cell	: number
+
+tuple
+	: '{' table-column ',' table-cell '}'
+
+table-column
+	: number
+
+table-cell
+	: number
+
+# 42 Naming characters, collections and property category sets
+#
+# 42.1 Specification of the ASN.1 Module "ASN1-CHARACTER-MODULE"
+#
+# The module is not printed here in full. Instead, the means by which it is
+# defined is specified.
+#
+# ...
+
+# 43 Canonical order of characters
+
+# 44 Definition of unrestricted character string types
+
+unrestricted-character-string-type
+	: 'CHARACTER' 'STRING'
+
+# 44.2 This type has a tag which is universal class, number 29.
+
+# 44.4 associated type
+
+unrestricted-character-string-value
+	: sequence-value
+
+# Notation for types defined in clauses 46 to 48
+
+useful-type
+	: type-reference
+
+# 46 Generalized time
+
+# 46.3 GeneralizedTime ::= [UNIVERSAL 24] IMPLICIT VisibleString
+
+# 47 Universal time
+
+# 47.3 UTCTime ::= [UNIVERSAL 23] IMPLICIT VisibleString
+
+# 48 The object descriptor type
+
+# ObjectDescriptor ::= [UNIVERSAL 7] IMPLICIT GraphicString
+
+# 49 Constrained types
+
+constrained-type
+	: type constraint
+	| type-with-constraint
+
+type-with-constraint
+	: 'SET' constraint 'OF' type
+	| 'SET' size-constraint 'OF' type
+	| 'SEQUENCE' constraint 'OF' type
+	| 'SEQUENCE' size-constraint 'OF' type
+	| 'SET' constraint 'OF' named-type
+	| 'SET' size-constraint 'OF' named-type
+	| 'SEQUENCE' constraint 'OF' named-type
+	| 'SEQUENCE' size-constraint 'OF' named-type
+
+constraint
+	: '(' constraint-spec exception-spec ')'
+
+constraint-spec
+	: subtype-constraint
+#	| general-constraint		# X.682, 8.1
+
+subtype-constraint
+	: element-set-specs
+
+element-set-specs
+	: root-element-set-spec
+	| root-element-set-spec ',' '...'
+	| root-element-set-spec ',' '...' ',' additional-element-set-spec
+
+root-element-set-spec
+	: element-set-spec
+
+additional-element-set-spec
+	: element-set-spec
+
+element-set-spec
+	: unions
+	| 'ALL' exclusions
+
+unions
+	: intersections
+	| intersections union-mark unions
+
+intersections
+	: intersection-elements
+	| intersection-elements intersection-mark intersections
+
+intersection-elements
+	: elements
+	| elements exclusions
+
+exclusions
+	: 'EXCEPT' elements
+
+union-mark
+	: '|'
+	| 'UNION'
+
+intersection-mark
+	: '^'
+	| 'INTERSECTION'
+
+elements
+	: subtype-elements
+#	| object-set-elements		# X.681, 12.10
+	| '(' element-set-spec ')'
+
+# 51 Subtype elements
+
+subtype-elements
+	: single-value
+	| contained-subtype
+	| value-range
+	| permitted-alphabet
+	| size-constraint
+	| type-constraint
+	| inner-type-constraints
+	| pattern-constraint
+	| property-settings
+	| duration-range
+	| time-point-range
+	| recurrence-range
+
+# 51.2 Single value
+
+single-value
+	: value
+
+# 51.3 Contained subtype
+
+contained-subtype
+	: 'INCLUDES'
+	| empty
+
+# 51.4 Value range
+
+value-range
+	: lower-end-point '..' upper-end-point
+
+lower-end-point
+	: lower-end-value
+	| lower-end-value '<'
+
+upper-end-point
+	: upper-end-value
+	| '<' upper-end-value
+
+lower-end-value
+	: value
+	| 'MIN'
+
+upper-end-value
+	: value
+	| 'MAX'
+
+# 51.5 Size constraint
+
+size-constraint
+	: 'SIZE' constraint
+
+# 51.6 Type constraint
+
+type-constraint
+	: type
+
+# 51.7 Permitted alphabet
+
+permitted-alphabet
+	: 'FROM' constraint
+
+# 51.8 Inner subtyping
+
+inner-type-constraints
+	: 'WITH' 'COMPONENT' silgle-type-constraint
+	| 'WITH' 'COMPONENTS' multiple-type-constraint
+
+silgle-type-constraint
+	: constraint
+
+multiple-type-constraint
+	: full-specification
+	| partial-specification
+
+full-specification
+	: '{' type-constraints '}'
+
+partial-specification
+	: '{' '...' ',' type-constraints '}'
+
+type-constraints
+	: named-constraint
+	| named-constraint ',' type-constraints
+
+named-constraint
+	: identifier component-constraint
+
+component-constraint
+	: value-constraint presence-constraint
+
+value-constraint
+	: constraint
+	| empty
+
+presence-constraint
+	: 'PRESENT'
+	| 'ABSENT'
+	| 'OPTIONAL'
+	| empty
+
+# Pattern constraint
+
+pattern-constraint
+	: 'PATTERN' value
+
+# 51.10 Property settings
+
+property-settings
+	: 'SETTINGS' simple-string
+
+# 51.11 Duration range
+
+duration-range
+	: value-range
+
+# 51.12 Time point range
+
+time-point-range
+	: value-range
+
+# 51.13 Recurrence range
+
+recurrence-range
+	: value-range
+
+# 52 The extension marker
+
+# 53 The exception identifier
+
+exception-spec
+	: '!' exception-identification
+	| empty
+
+exception-identification
+	: signed-number
+	| defined-value
+	| type ':' value
+
+# 54 Encoding control sections
+
+encoding-control-sections
+	: encoding-control-section encoding-control-sections
+	| empty
+
+encoding-control-section
+	: 'ENCODING-CONTROL' encoding-reference
+	  encoding-instruction-assignment-list
+
+# ---------
+
+# encoding-instruction-assignment-list	# Annex E
+# encoding-instruction			# Annex E
+
+# ---------
+
+# named-number-list, enumaration, named-bit-list -- identifiers exported with their type
+
+# ---------
+
+# Library modules: asn1-property?, asn1-re, asn1-time
+
+# ---------
