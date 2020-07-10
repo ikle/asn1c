@@ -39,7 +39,7 @@ encoding-reference-default
 	| empty
 
 tag-default
-	: 'EXSPLICIT' 'TAGS'
+	: 'EXPLICIT'  'TAGS'
 	| 'IMPLICIT'  'TAGS'
 	| 'AUTOMATIC' 'TAGS'
 	| empty
