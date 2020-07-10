@@ -392,6 +392,19 @@ component-type-lists
 	  root-component-type-list
 	| extension-and-exception extension-additions optional-extension-marker
 
+# component-type-lists
+#	: root-component-type-list
+#	| root-component-type-list ',' seq-extension
+#	| seq-extension
+#
+# seq-extension
+#	: extension-and-exception extension-additions seq-extension-tail
+#
+# seq-extension-tail
+#	: empty
+#	| extension-end-marker
+#	| extension-end-marker ',' root-component-type-list
+
 root-component-type-list
 	: component-type-list
 
@@ -853,6 +866,18 @@ type-with-constraint
 	| 'SET' size-constraint 'OF' named-type
 	| 'SEQUENCE' constraint 'OF' named-type
 	| 'SEQUENCE' size-constraint 'OF' named-type
+
+# type-with-constraint
+#	: 'SET' struct-constraint 'OF' cons-type
+#	| 'SEQUENCE' struct-constraint 'OF' cons-type
+#
+# struct-constraint
+#	: constraint
+#	| size-constraint
+#
+# cons-type
+#	: type
+#	| named-type
 
 constraint
 	: '(' constraint-spec exception-spec ')'
